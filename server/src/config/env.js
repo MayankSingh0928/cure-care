@@ -12,6 +12,10 @@ export const env = {
   nodeEnv: process.env.NODE_ENV || "development",
   port: process.env.PORT || 5000,
   clientUrl: process.env.CLIENT_URL || "http://localhost:5173",
+  clientUrls: (process.env.CLIENT_URLS || "")
+    .split(",")
+    .map((url) => url.trim())
+    .filter(Boolean),
   mongoUri: process.env.MONGO_URI || "",
   openFdaEventUrl: process.env.OPENFDA_EVENT_URL || "https://api.fda.gov/drug/event.json",
   aiServiceUrl: process.env.AI_SERVICE_URL || "http://localhost:8000",

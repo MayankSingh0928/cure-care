@@ -12,16 +12,23 @@ const app = express()
 
 const allowedOrigins = new Set([
   env.clientUrl,
+  ...env.clientUrls,
   "http://localhost:5173",
   "http://127.0.0.1:5173",
   "http://0.0.0.0:5173",
 ])
 
+function isAllowedOrigin(origin = "") {
+  if (allowedOrigins.has(origin)) return true
+  if (env.nodeEnv === "production" && /^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(origin)) return true
+  return false
+}
+
 app.use(
   cors({
     credentials: true,
     origin(origin, callback) {
-      if (!origin || allowedOrigins.has(origin)) {
+      if (!origin || isAllowedOrigin(origin)) {
         return callback(null, true)
       }
 
