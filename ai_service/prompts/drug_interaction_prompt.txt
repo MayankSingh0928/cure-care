@@ -1,0 +1,1 @@
+Analyze the supplied medicines, supplements, and patient context. Return clinically cautious interaction risk, mechanism, patient explanation, and recommended next steps.

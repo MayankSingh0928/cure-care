@@ -1,0 +1,18 @@
+{
+  "drugPairs": [
+    {
+      "drugs": ["warfarin", "ibuprofen"],
+      "risk": "high",
+      "reason": "Combined anticoagulant and NSAID bleeding risk"
+    },
+    {
+      "drugs": ["clonidine", "propranolol"],
+      "risk": "high",
+      "reason": "Rebound hypertension risk if clonidine is stopped suddenly"
+    }
+  ],
+  "bloodReportWeights": {
+    "abnormalMarker": 12,
+    "criticalMarker": 20
+  }
+}

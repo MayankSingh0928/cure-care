@@ -1,0 +1,42 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+**/node_modules
+
+# production
+/build
+**/dist
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+*.log
+
+# env files
+.env*
+!.env.example
+!.env.production.example
+
+# generated and deployment
+.vercel
+.next/
+out/
+*.tsbuildinfo
+coverage/
+
+# uploads
+ai_service/uploads/*
+!ai_service/uploads/.gitkeep
+
+# local analysis artifacts
+eng.traineddata
+extracted-blood-report.txt
+last-blood-report-analysis.json
+last-image-report-analysis.json
+server-smoke.out.log
+server-smoke.err.log
+client-dev.out.log
+client-dev.err.log

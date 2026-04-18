@@ -1,0 +1,10 @@
+{
+  "warfarin": ["coumadin"],
+  "ibuprofen": ["advil", "motrin"],
+  "acetaminophen": ["paracetamol", "tylenol"],
+  "propranolol": ["inderal"],
+  "clonidine": ["catapres"],
+  "metformin": ["glucophage"],
+  "atorvastatin": ["lipitor"],
+  "amoxicillin": ["amoxil"]
+}

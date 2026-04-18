@@ -1,0 +1,461 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(14, 165, 233, 0.12), transparent 34rem),
+    radial-gradient(circle at 88% 0%, rgba(20, 184, 166, 0.12), transparent 30rem),
+    linear-gradient(180deg, #f7fbff 0%, #eef7f6 52%, #f8fafc 100%);
+  color: #0f172a;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+input,
+textarea,
+button {
+  font: inherit;
+}
+
+button,
+a,
+input,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: rgba(14, 165, 233, 0.22);
+}
+
+@layer components {
+  .app-shell {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .page-dna-bg {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .page-dna-bg::before {
+    content: "";
+    position: absolute;
+    inset: -12%;
+    background:
+      radial-gradient(circle at 72% 18%, rgba(6, 182, 212, 0.2), transparent 24rem),
+      radial-gradient(circle at 20% 72%, rgba(20, 184, 166, 0.13), transparent 28rem),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(248, 250, 252, 0.74));
+  }
+
+  .page-dna-image {
+    position: absolute;
+    right: clamp(-17rem, -18vw, -4rem);
+    top: clamp(3.5rem, 9vw, 8rem);
+    width: clamp(42rem, 72vw, 88rem);
+    max-width: none;
+    opacity: 0.2;
+    filter: saturate(1.1) contrast(1.05) drop-shadow(0 34px 60px rgba(8, 47, 73, 0.16));
+    mask-image: linear-gradient(135deg, transparent 0%, #000 16%, #000 72%, transparent 100%);
+    -webkit-mask-image: linear-gradient(135deg, transparent 0%, #000 16%, #000 72%, transparent 100%);
+    animation: page-dna-drift 16s ease-in-out infinite;
+  }
+
+  .page-scan-beam {
+    position: absolute;
+    inset-block: -12%;
+    left: -30%;
+    width: 42%;
+    background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.08), rgba(255, 255, 255, 0.34), rgba(6, 182, 212, 0.1), transparent);
+    transform: rotate(-14deg);
+    animation: page-scan-sweep 7s ease-in-out infinite;
+  }
+
+  .particle-field {
+    position: absolute;
+    inset: 0;
+    opacity: 0.5;
+    background-image:
+      radial-gradient(circle, rgba(8, 145, 178, 0.28) 0 2px, transparent 2.8px),
+      radial-gradient(circle, rgba(20, 184, 166, 0.22) 0 1.5px, transparent 2.6px),
+      radial-gradient(circle, rgba(14, 165, 233, 0.18) 0 1px, transparent 2px);
+    background-position: 8% 18%, 82% 24%, 54% 72%;
+    background-size: 9rem 9rem, 13rem 13rem, 7rem 7rem;
+    animation: particles-drift 18s linear infinite;
+  }
+
+  .surface-card {
+    @apply rounded-lg border border-slate-200/80 bg-white/90 shadow-[0_24px_80px_rgba(15,23,42,0.08)] backdrop-blur;
+  }
+
+  .field {
+    @apply rounded-lg border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10;
+  }
+
+  .primary-button {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-slate-950 px-5 py-3 font-bold text-white shadow-lg shadow-cyan-950/10 transition hover:-translate-y-0.5 hover:bg-cyan-700 active:translate-y-0;
+  }
+
+  .secondary-button {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-5 py-3 font-bold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-cyan-300 hover:text-cyan-700 active:translate-y-0;
+  }
+
+  .eyebrow {
+    @apply text-xs font-black uppercase tracking-[0.24em] text-cyan-700;
+  }
+
+  .animated-card {
+    animation: rise-in 0.7s ease both;
+  }
+
+  .dna-backdrop {
+    animation: dna-drift 10s ease-in-out infinite;
+    filter: saturate(1.12) contrast(1.04) drop-shadow(0 30px 45px rgba(8, 47, 73, 0.16));
+    mask-image: linear-gradient(135deg, transparent 0%, #000 18%, #000 72%, transparent 100%);
+    -webkit-mask-image: linear-gradient(135deg, transparent 0%, #000 18%, #000 72%, transparent 100%);
+  }
+
+  .scan-beam {
+    background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.22), rgba(255, 255, 255, 0.65), rgba(6, 182, 212, 0.18), transparent);
+    animation: scan-sweep 4.8s ease-in-out infinite;
+  }
+
+  .clinical-readout {
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 0 0 1px rgba(103, 232, 249, 0.08), 0 18px 40px rgba(8, 47, 73, 0.18);
+  }
+
+  .clinical-readout::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 18% 20%, rgba(34, 211, 238, 0.16), transparent 8rem),
+      linear-gradient(110deg, transparent 0%, rgba(34, 211, 238, 0.14) 44%, rgba(255, 255, 255, 0.2) 50%, rgba(34, 211, 238, 0.1) 56%, transparent 100%);
+    transform: translateX(-100%);
+    animation: readout-shimmer 3.8s ease-in-out infinite;
+  }
+
+  .clinical-readout::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(103, 232, 249, 0.05) 1px, transparent 1px);
+    background-size: 100% 8px;
+    opacity: 0.55;
+  }
+
+  .status-pulse {
+    position: relative;
+    display: inline-grid;
+    height: 0.65rem;
+    width: 0.65rem;
+    place-items: center;
+    border-radius: 999px;
+    background: #67e8f9;
+    box-shadow: 0 0 18px rgba(103, 232, 249, 0.7);
+  }
+
+  .status-pulse::after {
+    content: "";
+    position: absolute;
+    inset: -0.45rem;
+    border-radius: inherit;
+    border: 1px solid rgba(103, 232, 249, 0.42);
+    animation: status-ring 1.9s ease-out infinite;
+  }
+
+  .ecg-strip {
+    height: 34px;
+  }
+
+  .ecg-strip svg {
+    display: block;
+    height: 100%;
+    width: 100%;
+    overflow: visible;
+  }
+
+  .ecg-path {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .ecg-path-muted {
+    stroke: rgba(103, 232, 249, 0.18);
+    stroke-width: 2;
+  }
+
+  .ecg-path-live {
+    stroke: #67e8f9;
+    stroke-width: 2.4;
+    stroke-dasharray: 84 320;
+    stroke-dashoffset: 0;
+    filter: drop-shadow(0 0 7px rgba(103, 232, 249, 0.7));
+    animation: ecg-travel 2.6s linear infinite;
+  }
+
+  .signal-meter {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.45rem;
+  }
+
+  .signal-meter span {
+    height: 0.25rem;
+    border-radius: 999px;
+    background: rgba(103, 232, 249, 0.2);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .signal-meter span::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #22d3ee, #99f6e4);
+    transform: scaleX(0.25);
+    transform-origin: left;
+    animation: meter-fill 2.4s ease-in-out infinite;
+  }
+
+  .signal-meter span:nth-child(2)::before {
+    animation-delay: 140ms;
+  }
+
+  .signal-meter span:nth-child(3)::before {
+    animation-delay: 280ms;
+  }
+
+  .signal-meter span:nth-child(4)::before {
+    animation-delay: 420ms;
+  }
+
+  .signal-meter span:nth-child(5)::before {
+    animation-delay: 560ms;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-line {
+  0%,
+  100% {
+    transform: scaleX(0.45);
+    opacity: 0.45;
+  }
+
+  50% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+@keyframes float-soft {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes dna-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-4deg) scale(1);
+  }
+
+  50% {
+    transform: translate3d(-14px, 10px, 0) rotate(-2deg) scale(1.04);
+  }
+}
+
+@keyframes scan-sweep {
+  0%,
+  100% {
+    transform: translateX(-65%) rotate(-12deg);
+    opacity: 0;
+  }
+
+  20%,
+  70% {
+    opacity: 1;
+  }
+
+  55% {
+    transform: translateX(68%) rotate(-12deg);
+  }
+}
+
+@keyframes page-dna-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-5deg) scale(1);
+  }
+
+  50% {
+    transform: translate3d(-22px, 18px, 0) rotate(-2deg) scale(1.035);
+  }
+}
+
+@keyframes page-scan-sweep {
+  0%,
+  100% {
+    transform: translateX(-35%) rotate(-14deg);
+    opacity: 0;
+  }
+
+  16%,
+  70% {
+    opacity: 1;
+  }
+
+  58% {
+    transform: translateX(330%) rotate(-14deg);
+  }
+}
+
+@keyframes particles-drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-4rem, 3rem, 0);
+  }
+}
+
+@keyframes readout-shimmer {
+  0%,
+  100% {
+    transform: translateX(-110%);
+    opacity: 0;
+  }
+
+  22%,
+  72% {
+    opacity: 1;
+  }
+
+  58% {
+    transform: translateX(110%);
+  }
+}
+
+@keyframes status-ring {
+  from {
+    opacity: 0.75;
+    transform: scale(0.45);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(1.25);
+  }
+}
+
+@keyframes ecg-travel {
+  to {
+    stroke-dashoffset: -404;
+  }
+}
+
+@keyframes meter-fill {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scaleX(0.22);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@media (max-width: 767px) {
+  .page-dna-image {
+    right: -18rem;
+    top: 8rem;
+    width: 42rem;
+    opacity: 0.12;
+    animation: mobile-dna-fade 8s ease-in-out infinite;
+  }
+
+  .page-scan-beam {
+    opacity: 0.45;
+    animation-duration: 9s;
+  }
+
+  .particle-field {
+    opacity: 0.28;
+    background-size: 10rem 10rem, 15rem 15rem, 8rem 8rem;
+    animation-duration: 28s;
+  }
+}
+
+@keyframes mobile-dna-fade {
+  0%,
+  100% {
+    opacity: 0.09;
+    transform: translate3d(0, 0, 0) rotate(-4deg);
+  }
+
+  50% {
+    opacity: 0.15;
+    transform: translate3d(-8px, 8px, 0) rotate(-3deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .page-dna-image {
+    opacity: 0.12;
+    transform: rotate(-4deg) !important;
+  }
+
+  .page-scan-beam {
+    display: none;
+  }
+}
