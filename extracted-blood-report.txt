@@ -1,0 +1,404 @@
+DEPARTMENT OF PATHOLOGY
+E.S.R.
+Westegren`s Method
+45 mm/1st hr 0 - 20
+Complete Blood Count (CBC)
+Hemoglobin
+Spectrophotometry SLS
+12.20 gm/dl 11.5-16.5
+RBC
+Electrical Impedance
+3.80 10^6/uL 3.9-5.2
+WBC/TLC
+Electrical Impedance
+4.38 10^3/uL 4 - 11
+Absolute Lymphocyte Count(LYMPH)
+Electrical Impedance
+1.58 10^3/uL
+Absolute Granulocyte Count (GRA)
+Electrical Impedance
+2.43 10^3/uL 2 - 7
+Mid%
+Calculated
+8.40 % 3 - 15
+Lym%
+Calculated
+36.10 % 20 - 44
+Gran%
+Calculated
+55.50 % 40 - 75
+Platelet Count
+Electrical Impedance
+61.00 10^3/uL 150 - 450
+MCV
+Derived from RBC histogram
+96.90 fL 83-96
+MCH
+Calculated
+32.00 Pg. 26.4-32.3
+MCHC
+Calculated
+33.00 gm/dl 31.8-34.2
+RDW-SD
+Calculated
+58.50 fL 37 - 56
+RDW-CV
+Calculated
+17.80 % 11.5 - 14.5
+HCT
+Calculated
+36.90 % 36.4-46
+MPV
+Derived from Platelet histogram
+11.60 fL 8 - 9.5
+PDW
+Calculated
+14.90 fL 8.3 - 25
+PCT
+Calculated
+0.07 % 0.15 - 0.62
+P-LCC
+Calculated
+25.00 % 44 - 140
+Order ID : 250801650144483M13
+UHID : 260600084390 	Received On : 17/03/2026 11:22:37 AM
+Name : monika ... 	Reported On : 18/03/2026 12:02:56 AM
+Gender / Age : Female / 40 Yrs 	Ref. By : DR JITESH GAWANDE
+Sample : EDTA whole blood
+Investigation 	Observed Value Unit Biological Ref Interval
+Dr.Shushil Kumar Verma
+MBBS
+Page No: 1 of 5
+
+-- 1 of 5 --
+
+P-LCR
+Calculated
+40.70 % 15 - 35
+Order ID : 250801650144483M13
+UHID : 260600084390 	Received On : 17/03/2026 11:22:37 AM
+Name : monika ... 	Reported On : 18/03/2026 12:02:56 AM
+Gender / Age : Female / 40 Yrs 	Ref. By : DR JITESH GAWANDE
+Sample : EDTA whole blood
+Investigation 	Observed Value Unit Biological Ref Interval
+Dr.Shushil Kumar Verma
+MBBS
+Page No: 2 of 5
+
+-- 2 of 5 --
+
+DEPARTMENT OF MICROBIOLOGY & INFECTIOUS DISEASE SEROLOGY
+RA Factor
+Latex agglutination test
+NEGATIVE NEGATIVE
+Interpretation:
+1. The detection of rheumatoid factor (RF) is one of the criteria of the American Rheumatism Association (ARA) for the diagnosis of Rheumatoid Arthritis
+(RA).
+2. RFs play an important role in the differential diagnosis between RA and other rheumatic diseases. They also permit prognostic statements with
+regards to RA.
+Order ID : 250801650144483M13
+UHID : 260600084390 	Received On : 17/03/2026 11:22:37 AM
+Name : monika ... 	Reported On : 18/03/2026 12:02:56 AM
+Gender / Age : Female / 40 Yrs 	Ref. By : DR JITESH GAWANDE
+Sample : SERUM
+Investigation 	Observed Value Unit Biological Ref Interval
+Dr.Aarti Akhand
+Msc (Medical Mircrobiology) Ph
+Page No: 3 of 5
+
+-- 3 of 5 --
+
+DEPARTMENT OF BIOCHEMISTRY (PROVISIONAL REPORT)
+Glucose - Random
+Hexokinase
+82.00 mg/dL 70 - 150
+Uric acid
+Uricase PAP
+2.98 mg/dL 2.6 - 6
+Serum Calcium
+Arsenazo III; O-Cresolphthalein complexone; Methylthymol blue
+9.47 mg/dL 8.8 - 10.8
+Serum Vitamin B12
+Serum, CLIA
+264.00 pg/mL 120 - 914
+Serum vitamin D
+Serum, CLIA
+8.79 ng/mL 20 - 100
+Interpretation:
+The assay measures both D2 (Ergocalciferol) and D3 (Cholecalciferol) metabolites of vitamin D.
+25 (OH)D is influenced by sunlight, altitude, skin pigmentation, sunscreen use and hepatic function.
+Optimal calcium absorption requires vitamin D 25 (OH) levels exceeding 75 mol/L.
+It shows seasonal variation, with values being 40-50% lower in winter than in summer.
+Levels vary with age and are increased in pregnancy.
+Testing for 25(OH)vitamin D is recommended as it is the best indicator of vitamin D nutritional status as obtained from sunlight exposure & dietary intake.
+For diagnosis of vitamin D deficiency, it is recommended to have clinical correlation with serum 25(OH) vitamin D, serum calcium, serum PTH & serum
+alkaline phosphatase.
+Comments:
+Vitamin D promotes absorption of calcium and phosphorus and mineralization of bones and teeth. Deficiency in children causes Rickets and in adults
+leads to Osteomalacia. It can also lead to Hypocalcemia and Tetany. Vitamin D status is best determined by measurement of 25 hydroxy vitamin D, as it
+is the major circulating form and has longer half life (2-3 weeks) than 1,25 Dihydroxy vitamin D (5-8 hrs).
+Decreased Levels - Inadequate exposure to sunlight Ã¢ÂÂ¢ Dietary deficiency Ã¢ÂÂ¢ Vitamin D malabsorption Severe Hepatocellular disease Ã¢ÂÂ¢
+Drugs like Anticonvulsants Ã¢ÂÂ¢ Nephrotic syndrome
+Increased levels - Vitamin D intoxication
+Thyroid Profile
+FT3
+CLIA
+2.80 pg/mL 2.5 - 3.9
+FT4
+CLIA
+0.60 ug/dL 0.61 - 1.12
+TSH
+CLIA
+7.82 uIU/mL 0.38 - 5.33
+Order ID : 250801650144483M13
+UHID : 260600084390 	Received On : 17/03/2026 11:22:37 AM
+Name : monika ... 	Reported On : 18/03/2026 12:02:56 AM
+Gender / Age : Female / 40 Yrs 	Ref. By : DR JITESH GAWANDE
+Sample : SERUM
+Investigation 	Observed Value Unit Biological Ref Interval
+Page No: 4 of 5
+
+-- 4 of 5 --
+
+TSH Biological Reference Interval (Female)
+Non-Pregnant : 0.38-5.33
+1st Trimester : 0.5-3.7
+2nd Trimester: 0.31-4.35
+3rd Trimester: 0.41-5.18
+C Reactive Protein CRP (Qualitative, Quantitative)
+CRP- Quantitative
+Spectrophotometer turbidimetric IA (Serum)
+5.80 mg/L 0-5
+Interpretation:
+1.Measurement of CRP is useful for the detection and evaluation of infection, tissue injury, inflammatory disorders and associated diseases .
+2.High sensitivity CRP (hsCRP) measurements may be used as an independent risk marker for the identification of individual at risk for future
+cardiovascular disease.
+3.Increase in CRP values are non-Specific and should not be interpreted without a complete history.
+---End of Report---
+Order ID : 250801650144483M13
+UHID : 260600084390 	Received On : 17/03/2026 11:22:37 AM
+Name : monika ... 	Reported On : 18/03/2026 12:02:56 AM
+Gender / Age : Female / 40 Yrs 	Ref. By : DR JITESH GAWANDE
+Sample : SERUM
+Investigation 	Observed Value Unit Biological Ref Interval
+Page No: 5 of 5
+
+-- 5 of 5 --
+
+
+= , [HEAR
+Qu Shyam Shah Medical College, Rewa
+= N= College Rd, near Sanjay Gandhi Medical Hospital, Hari Bhushan Nagar, Rewa,
+NE 04 Madhya Pradesh 486001
+Order ID :250801650144483M13
+UHID + 260600084390 Received On: 17/03/2026 11:22:37 AM
+Name + monika ... Reported On: 18/03/2026 12:02:56 AM
+Gender / Age + Female / 40 Yrs Ref. By DR JITESH GAWANDE
+Sample : EDTA whole blood
+Investigation Observed Value Unit Biological Ref Interval
+DEPARTMENT OF PATHOLOGY
+ESR. 45 mm/1st hr 0-20
+Westegron's Method
+Complete Blood Count (CBC)
+Hemoglobin 12.20 gm/dl 11.5-16.5
+Spoctophotometry SLS
+RBC 3.80 10%6/uL. 3.952
+Electrical Impedance
+WBC/TLC 4.38 1043/uL. 4-11
+Etectrical Impedance
+Absolute Lymphocyte Count(LYMPH) 1.58 1073/uL
+Etectrical Impedance
+Absolute Granulocyte Count (GRA) 243 1073/uL 2-7
+Etectrical Impedance
+Mid% 8.40 % 3-15
+Calculated
+Lym% 36.10 % 20-44
+Galeulted
+Gran% 55.50 % 40-75
+Calculated
+Platelet Count 61.00 1073/uL. 150 - 450
+Electrical Impedance
+MCV 96.90 fL 83-96
+Derived rom REC histogram
+MCH 32.00 Pg. 26.4-32.3
+Calculated
+MCHC 33.00 gm/dl 31.8-34.2
+Calculated
+RDW-SD 58.50 fL 37-56
+Calculated
+RDW-CV 17.80 % 11.5-14.5
+Calculated
+HCT 36.90 % 36.4-46
+Calculated
+MPV 11.60 fL 8-95
+Derived from Pratoet histogram
+PDW 14.90 fL 83-25
+Calculated
+PCT 0.07 %. 0.15-0.62
+Calculated
+p-LCC 25.00 % 44-140
+Calculated
+ZA
+Dr.Shushil Kumar Verma
+MBBS
+Page No: 1 of 5
+Kindly correlate result clinically.
+
+- , [HEAR
+Qu Shyam Shah Medical College, Rewa
+A el, College Rd, near Sanjay Gandhi Medical Hospital, Hari Bhushan Nagar, Rewa,
+NE 04 Madhya Pradesh 486001
+
+Order ID + 250801650144483M13
+
+UHID + 260600084390 Received On: 17/03/2026 11:22:37 AM
+
+Name + monika ... Reported On: 18/03/2026 12:02:56 AM
+
+Gender / Age + Female / 40 Yrs Ref. By DR JITESH GAWANDE
+
+Sample : EDTA whole blood
+
+P-LCR 40.70 % 15-35
+
+Calculated
+ZA
+Dr.Shushil Kumar Verma
+MBBS
+
+Page No: 2 of 5
+Kindly correlate result clinically.
+
+7 TR)
+f«#) Shyam Shah Medical College, Rewa
+= N= College Rd, near Sanjay Gandhi Medical Hospital, Hari Bhushan Nagar, Rewa,
+eww =” Madhya Pradesh 486001
+NEE Vi
+
+Order ID © 250801650144483M13
+
+UHID 1260600084390 Received On 17/03/2026 11:22:37 AM
+
+Name smonika ... Reported On + 18/03/2026 12:02:56 AM
+
+Gender / Age : Female / 40 Yrs Ref. By DR JITESH GAWANDE
+
+Sample : SERUM
+Investigation Observed Value Unit Biological Ref Interval
+
+DEPARTMENT OF MICROBIOLOGY & INFECTIOUS DISEASE SEROLOGY
+RA Factor NEGATIVE NEGATIVE
+Lato aggitiadon tost
+Interpretation:
+1. The detection of rheumatoid factor (RF) is one of the criteria of the American Rheumatism Association (ARA) for the diagnosis of Rheumatoid Arthritis
+(RA).
+2. RFs play an important role in the differential diagnosis between RA and other rheumatic diseases. They also permit prognostic statements with
+regards to RA.
+Dr.Aarti Akhand
+Page No: 3015 Msc (Medical Mircrobiology) Ph
+Kindly correlate result clinically.
+
+7X)
+f«#) Shyam Shah Medical College, Rewa
+iN > 5 College Rd, near Sanjay Gandhi Medical Hospital, Hari Bhushan Nagar, Rewa,
+ONE A
+w=” Madhya Pradesh 486001
+
+Order ID + 250801650144483M13
+
+UHID + 260600084390 Received On: 17/03/2026 11:22:37 AM
+
+Name + monika ... Reported On: 18/03/2026 12:02:56 AM
+
+Gender / Age + Female / 40 Yrs Ref. By DR JITESH GAWANDE
+
+Sample : SERUM
+Investigation Observed Value Unit Biological Ref Interval
+
+DEPARTMENT OF BIOCHEMISTRY (PROVISIONAL REPORT)
+
+Glucose - Random 82.00 mg/dL 70-150
+
+Hexokinase
+
+Uric acid 2.98 mg/dL 26-6
+
+Uricase PAP
+
+Serum Calcium 9.47 mg/dL. 88-108
+Arsenazo I, O-Cresolphthaiin complexone; Methythymol be
+
+Serum Vitamin B12 264.00 pg/mL 120-914
+
+Serum, GLIA
+
+Serum vitamin D 8.79 ng/mL 20-100
+
+Serum, CLIA
+Interpretation:
+The assay measures both D2 (Ergocalciferol) and D3 (Cholecalciferol) metabolites of vitamin D.
+25 (OH)D is influenced by sunlight, altitude, skin pigmentation, sunscreen use and hepatic function.
+Optimal calcium absorption requires vitamin D 25 (OH) levels exceeding 75 mol/L.
+It shows seasonal variation, with values being 40-50% lower in winter than in summer.
+Levels vary with age and are increased in pregnancy.
+Testing for 25(0H vitamin D is recommended as itis the best indicator of vitamin D nutritional status as obtained from sunlight exposure & dietary intake.
+For diagnosis of vitamin D deficiency, it is recommended to have clinical correlation with serum 25(OH) vitamin D, serum calcium, serum PTH & serum
+alkaline phosphatase.
+Comments:
+Vitamin D promotes absorption of calcium and phosphorus and mineralization of bones and teeth. Deficiency in children causes Rickets and in adults
+leads to Osteomalacia. It can also lead to Hypocalcemia and Tetany. Vitamin D status is best determined by measurement of 25 hydroxy vitamin D, as it
+is the major circulating form and has longer half life (2-3 weeks) than 1,25 Dihydroxy vitamin D (5-8 hrs).
+Decreased Levels - Inadequate exposure to sunlight A¢AA¢ Dietary deficiency A¢AA¢ Vitamin D malabsorption Severe Hepatocellular disease A¢AA¢
+Drugs like Anticonvulsants A¢gAA¢ Nephrotic syndrome
+Increased levels - Vitamin D intoxication
+Thyroid Profile
+
+FT3 2.80 pg/mL 25-39
+
+cua
+
+FT4 0.60 ug/dL 0.61-1.12
+
+cua
+TSH) 7.82 ulU/mL 0.38-5.33
+
+cua
+
+Page No: 4 of 5
+Kindly correlate result clinically.
+
+7X)
+f«#) Shyam Shah Medical College, Rewa
+= N= College Rd, near Sanjay Gandhi Medical Hospital, Hari Bhushan Nagar, Rewa,
+eww =” Madhya Pradesh 486001
+
+Order ID + 250801650144483M13
+
+UHID + 260600084390 Received On: 17/03/2026 11:22:37 AM
+
+Name + monika ... Reported On: 18/03/2026 12:02:56 AM
+
+Gender / Age + Female / 40 Yrs Ref. By DR JITESH GAWANDE
+
+Sample : SERUM
+Investigation Observed Value Unit Biological Ref Interval
+TSH Biological Reference Interval (Female)
+Non-Pregnant : 0.38-5.33
+1st Trimester : 0.5-3.7
+2nd Trimester: 0.31-4.35
+3rd Trimester: 0.41-5.18
+
+Reactive Protein CRP (Qualitative. Quantitat
+
+CRP- Quantitative 5.80 mg/L 0-5
+
+Spectrophotomeler urbidimelric IA (Serum)
+Interpretation:
+1.Measurement of CRP is useful for the detection and evaluation of infection, tissue injury, inflammatory disorders and associated diseases .
+2.High sensitivity CRP (hsCRP) measurements may be used as an independent risk marker for the identification of individual at risk for future
+cardiovascular disease.
+3.Increase in CRP values are non-Specific and should not be interpreted without a complete history.
+
+---End of Report---
+Page No: 5 of 5
+Kindly correlate result clinically.

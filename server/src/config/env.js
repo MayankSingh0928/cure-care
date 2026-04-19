@@ -9,17 +9,12 @@ dotenv.config({ path: path.resolve(__dirname, "../../../.env") })
 dotenv.config()
 
 export const env = {
-  nodeEnv: process.env.NODE_ENV || "development",
   port: process.env.PORT || 5000,
   clientUrl: process.env.CLIENT_URL || "http://localhost:5173",
-  clientUrls: (process.env.CLIENT_URLS || "")
-    .split(",")
-    .map((url) => url.trim())
-    .filter(Boolean),
+  corsOrigins: process.env.CORS_ORIGINS || "",
   mongoUri: process.env.MONGO_URI || "",
   openFdaEventUrl: process.env.OPENFDA_EVENT_URL || "https://api.fda.gov/drug/event.json",
   aiServiceUrl: process.env.AI_SERVICE_URL || "http://localhost:8000",
   openAiApiKey: process.env.OPENAI_API_KEY || "",
   openAiModel: process.env.OPENAI_MODEL || "gpt-4o-mini",
-  enableOcr: process.env.ENABLE_OCR === "true",
 }

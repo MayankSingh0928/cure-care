@@ -1,7 +1,9 @@
 import { createRequire } from "module"
-import { env } from "../config/env.js"
+import { PDFParse } from "pdf-parse"
+import { createWorker } from "tesseract.js"
 
 const require = createRequire(import.meta.url)
+const englishOcrData = require("@tesseract.js-data/eng")
 
 function isTextFile(file) {
   return file?.mimetype?.startsWith("text/") || file?.mimetype === "application/csv" || file?.originalname?.toLowerCase().endsWith(".csv")
@@ -16,20 +18,6 @@ function isImage(file) {
 }
 
 async function recognizeImageBuffer(buffer) {
-  if (!env.enableOcr) {
-    return ""
-  }
-
-  let createWorker
-  let englishOcrData
-
-  try {
-    ;({ createWorker } = await import("tesseract.js"))
-    englishOcrData = require("@tesseract.js-data/eng")
-  } catch {
-    throw new Error("OCR is enabled but OCR dependencies are not installed. Set ENABLE_OCR=false or deploy OCR on a larger service.")
-  }
-
   const worker = await createWorker(englishOcrData.code, undefined, {
     gzip: englishOcrData.gzip,
     langPath: englishOcrData.langPath,
@@ -44,7 +32,6 @@ async function recognizeImageBuffer(buffer) {
 }
 
 async function extractPdfText(file) {
-  const { PDFParse } = await import("pdf-parse")
   const parser = new PDFParse({ data: file.buffer })
 
   try {
@@ -53,10 +40,6 @@ async function extractPdfText(file) {
     const pageTexts = []
 
     try {
-      if (!env.enableOcr) {
-        return { text, source: "pdf" }
-      }
-
       const screenshots = await parser.getScreenshot({
         first: 5,
         imageBuffer: true,

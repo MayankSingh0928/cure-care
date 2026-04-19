@@ -1,6 +1,6 @@
 import cors from "cors"
 import express from "express"
-import { connectDb } from "./config/db.js"
+import { connectDb, getDbStatus } from "./config/db.js"
 import { env } from "./config/env.js"
 import { errorHandler, notFound } from "./middleware/errorMiddleware.js"
 import aiRoutes from "./routes/aiRoutes.js"
@@ -10,25 +10,28 @@ import prescriptionRoutes from "./routes/prescriptionRoutes.js"
 
 const app = express()
 
+const configuredOrigins = [env.clientUrl, ...env.corsOrigins.split(",")]
+  .map((origin) => origin.trim())
+  .filter(Boolean)
+
 const allowedOrigins = new Set([
-  env.clientUrl,
-  ...env.clientUrls,
+  ...configuredOrigins,
   "http://localhost:5173",
+  "http://localhost:4173",
   "http://127.0.0.1:5173",
+  "http://127.0.0.1:4173",
   "http://0.0.0.0:5173",
+  "http://0.0.0.0:4173",
 ])
 
-function isAllowedOrigin(origin = "") {
-  if (allowedOrigins.has(origin)) return true
-  if (env.nodeEnv === "production" && /^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(origin)) return true
-  return false
-}
+const localNetworkOriginPattern =
+  /^https?:\/\/(?:localhost|127\.0\.0\.1|0\.0\.0\.0|10\.\d{1,3}\.\d{1,3}\.\d{1,3}|172\.(?:1[6-9]|2\d|3[0-1])\.\d{1,3}\.\d{1,3}|192\.168\.\d{1,3}\.\d{1,3}):(?:5173|4173)$/
 
 app.use(
   cors({
     credentials: true,
     origin(origin, callback) {
-      if (!origin || isAllowedOrigin(origin)) {
+      if (!origin || allowedOrigins.has(origin) || localNetworkOriginPattern.test(origin)) {
         return callback(null, true)
       }
 
@@ -40,7 +43,7 @@ app.use(express.json({ limit: "2mb" }))
 app.use(express.urlencoded({ extended: true }))
 
 app.get("/api/health", (req, res) => {
-  res.json({ status: "ok", service: "curecare-api" })
+  res.json({ status: "ok", service: "curecare-api", database: getDbStatus() })
 })
 
 app.use("/api/prescriptions", prescriptionRoutes)
