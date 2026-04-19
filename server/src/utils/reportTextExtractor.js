@@ -20,10 +20,15 @@ async function recognizeImageBuffer(buffer) {
     return ""
   }
 
-  const [{ createWorker }, englishOcrData] = await Promise.all([
-    import("tesseract.js"),
-    Promise.resolve(require("@tesseract.js-data/eng")),
-  ])
+  let createWorker
+  let englishOcrData
+
+  try {
+    ;({ createWorker } = await import("tesseract.js"))
+    englishOcrData = require("@tesseract.js-data/eng")
+  } catch {
+    throw new Error("OCR is enabled but OCR dependencies are not installed. Set ENABLE_OCR=false or deploy OCR on a larger service.")
+  }
 
   const worker = await createWorker(englishOcrData.code, undefined, {
     gzip: englishOcrData.gzip,
