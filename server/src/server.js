@@ -15,6 +15,7 @@ const configuredOrigins = [env.clientUrl, ...(env.corsOrigins || "").split(",")]
 const allowedOrigins = new Set([
   ...configuredOrigins,
   "https://cure-care-client-production.up.railway.app",
+  "https://cure-care-client.vercel.app",
   "http://localhost:5173",
   "http://localhost:4173",
   "http://127.0.0.1:5173",
