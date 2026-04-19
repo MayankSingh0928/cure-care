@@ -15,6 +15,12 @@ function jsAsJsx() {
 }
 
 export default defineConfig({
+  server: {
+    allowedHosts: ["cure-care-client-production.up.railway.app"],
+  },
+  preview: {
+    allowedHosts: ["cure-care-client-production.up.railway.app"],
+  },
   plugins: [jsAsJsx(), react()],
   optimizeDeps: {
     esbuildOptions: {
