@@ -50,7 +50,7 @@ function findCuratedRules(drugs) {
 async function fetchOpenFdaSignal(drug) {
   const query = encodeURIComponent(`patient.drug.medicinalproduct:"${drug}"`)
   const url = `${env.openFdaEventUrl}?search=${query}&limit=1`
-  const response = await safeJsonFetch(url)
+  const response = await safeJsonFetch(url, { timeoutMs: 2500 })
 
   if (!response.ok || !response.data?.results?.length) {
     return null
@@ -84,7 +84,7 @@ function compactText(value, fallback) {
 async function fetchOpenFdaLabel(drug) {
   const query = encodeURIComponent(`openfda.generic_name:"${drug}" OR openfda.brand_name:"${drug}" OR openfda.substance_name:"${drug}"`)
   const url = `https://api.fda.gov/drug/label.json?search=${query}&limit=1`
-  const response = await safeJsonFetch(url, { timeoutMs: 7000 })
+  const response = await safeJsonFetch(url, { timeoutMs: 2500 })
 
   if (!response.ok || !response.data?.results?.length) return null
   const label = response.data.results[0]
@@ -223,7 +223,8 @@ export async function checkInteractions(payload) {
 
   const csvMatches = findCsvInteractions(drugs)
   const curatedMatches = findCuratedRules(drugs)
-  const openFdaSignals = (await Promise.all(drugs.slice(0, 4).map(fetchOpenFdaSignal))).filter(Boolean)
+  const shouldFetchOpenFdaSignals = csvMatches.length === 0 && curatedMatches.length === 0
+  const openFdaSignals = shouldFetchOpenFdaSignals ? (await Promise.all(drugs.slice(0, 4).map(fetchOpenFdaSignal))).filter(Boolean) : []
 
   const interactions = uniqueInteractions([...curatedMatches, ...csvMatches, ...openFdaSignals]).map((interaction) => ({
     ...interaction,
@@ -237,7 +238,7 @@ export async function checkInteractions(payload) {
   return {
     normalizedDrugs: drugs,
     interactions,
-    sourceSummary: "Curated rules + CSV dataset + OpenFDA FAERS signal lookup",
+    sourceSummary: shouldFetchOpenFdaSignals ? "Curated rules + CSV dataset + OpenFDA FAERS signal lookup" : "Curated rules + CSV dataset",
     coverageNotice:
       "OpenFDA FAERS is an adverse-event signal source, not a complete drug-drug interaction database. Treat results as decision support and verify clinically.",
   }
