@@ -1,6 +1,6 @@
 # cure&care Drug Safety Checker
 
-cure&care is a production-oriented starter for drug interaction screening and blood report analysis. It is split into a React client, an Express API, and a FastAPI AI layer.
+cure&care is a production-oriented starter for drug interaction screening and blood report analysis. It is split into a React client and an Express API.
 
 ## What Works
 
@@ -8,9 +8,9 @@ cure&care is a production-oriented starter for drug interaction screening and bl
 - Blood report workflow with upload/text input and English/Hindi output.
 - Blood report extraction for pasted text, TXT, CSV, PDF text, and OCR-readable JPG/PNG images.
 - AI-style blood report response with prevention, cure direction, remedies, possible cause, medicine guidance, and risk percentage.
-- Dashboard history for recent checks.
+- Dashboard history for recent checks while the server process is running.
 - No login or authentication requirement; all tools are directly usable.
-- Clean API, service, route, controller, model, middleware, and data folders.
+- Clean API, service, route, controller, middleware, and data folders.
 
 ## Run
 
@@ -22,14 +22,6 @@ npm run dev
 Client: `http://localhost:5173`
 
 Server: `http://localhost:5000/api/health`
-
-AI service separately:
-
-```bash
-cd ai_service
-pip install -r requirements.txt
-uvicorn app:app --reload --port 8000
-```
 
 ## Blood Report Upload Formats
 
@@ -44,23 +36,9 @@ The blood report screen accepts:
 
 Very low-quality scans can still fail to extract values accurately, so users should review the detected findings before trusting the summary.
 
-## Environment
+History is intentionally stored in memory only. Recent checks remain available while the server process is running and reset when the backend restarts.
 
-Use `.env.example` as the safe template. Keep real `.env` files private and out of Git.
-
-```env
-NODE_ENV=development
-PORT=5000
-CLIENT_URL=http://localhost:5173
-VITE_API_URL=http://localhost:5000/api
-OPENFDA_EVENT_URL=https://api.fda.gov/drug/event.json
-MONGO_URI=mongodb://127.0.0.1:27017/drug_safety_checker
-AI_SERVICE_URL=http://localhost:8000
-OPENAI_API_KEY=
-OPENAI_MODEL=gpt-4o-mini
-```
-
-For production, set `CLIENT_URL` to the deployed frontend URL, `VITE_API_URL` to the deployed API URL, and use a managed MongoDB connection string. Optional OpenAI enrichment works only when `OPENAI_API_KEY` is configured.
+Optional OpenAI enrichment works only when an API key is configured.
 
 ## Trust And Safety
 

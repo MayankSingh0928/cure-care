@@ -23,7 +23,3 @@ yarn-error.log*
 .next/
 out/
 *.tsbuildinfo
-
-# uploads
-ai_service/uploads/*
-!ai_service/uploads/.gitkeep

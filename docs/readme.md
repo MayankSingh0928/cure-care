@@ -3,8 +3,7 @@
 ## Layers
 
 - `client`: React + Tailwind dashboard for patients, clinicians, and pharmacists.
-- `server`: Express API for auth, prescription logs, drug safety checks, blood report analysis, CSV lookup, and OpenFDA calls.
-- `ai_service`: FastAPI service for AI-oriented risk summaries and future model expansion.
+- `server`: Express API for drug safety checks, blood report analysis, CSV lookup, OpenFDA calls, and optional OpenAI enrichment.
 
 ## Drug Workflow
 

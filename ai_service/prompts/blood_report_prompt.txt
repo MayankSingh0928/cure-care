@@ -1,1 +1,0 @@
-Analyze the supplied blood report text and produce patient-friendly guidance with risk percentage, prevention, cure direction, remedies, possible cause, medicine guidance, and clear safety disclaimers.

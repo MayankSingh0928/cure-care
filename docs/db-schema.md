@@ -1,35 +1,27 @@
-# Database Schema
+# Runtime Storage
 
-MongoDB models are included for production migration. The current development server can run without MongoDB and stores dashboard history in memory.
+The current server does not use a database. Dashboard history is stored in memory and resets whenever the backend process restarts.
 
-## User
+## Drug Check History
 
-- `name`
-- `email`
-- `passwordHash`
-- `role`
+Stored in memory by `server/src/controllers/drugController.js`.
 
-## Prescription
-
-- `patientName`
-- `medicines`
-- `conditions`
-- `supplements`
-
-## InteractionLog
+Fields:
 
 - `drugs`
-- `sourceSummary`
 - `interactionCount`
-- `interactions`
+- `createdAt`
 
-## BloodReportLog
+## Blood Report History
+
+Stored in memory by `server/src/controllers/bloodReportController.js`.
+
+Fields:
 
 - `language`
 - `riskPercentage`
-- `findings`
-- `summary`
+- `createdAt`
 
-## Production Notes
+## Notes
 
-Use encrypted storage, audit logs, strict authentication, consent capture, and retention policies before storing real health data.
+Because no database is used, no check history persists after a restart. Add encrypted storage, audit logs, strict authentication, consent capture, and retention policies before storing real health data permanently.

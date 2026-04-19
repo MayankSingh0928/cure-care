@@ -54,13 +54,3 @@ Returns:
 `GET /blood-reports/history`
 
 Returns recent in-memory blood report analyses.
-
-## Users
-
-`POST /users/register`
-
-`POST /users/login`
-
-`GET /users/profile`
-
-These are demo auth endpoints and should be hardened before handling real patient data.

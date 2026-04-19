@@ -1,20 +1,6 @@
 import { env } from "../config/env.js"
 import { safeJsonFetch } from "../utils/apiHelper.js"
 
-export async function callAiService(path, payload) {
-  const response = await safeJsonFetch(`${env.aiServiceUrl}${path}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  })
-
-  if (!response.ok) {
-    return { available: false, message: "AI service is unavailable; local rule engine response was used." }
-  }
-
-  return { available: true, data: response.data }
-}
-
 function outputText(data) {
   if (typeof data?.output_text === "string") return data.output_text
 
