@@ -6,6 +6,7 @@ import bloodReportRoutes from "./routes/bloodReportRoutes.js"
 import drugApiRoutes from "./routes/drugApiRoutes.js"
 
 const app = express()
+const host = "0.0.0.0"
 
 const configuredOrigins = [env.clientUrl, ...env.corsOrigins.split(",")]
   .map((origin) => origin.trim())
@@ -49,6 +50,15 @@ app.use("/api/blood-reports", bloodReportRoutes)
 app.use(notFound)
 app.use(errorHandler)
 
-app.listen(env.port, () => {
-  console.log(`cure&care API running on http://localhost:${env.port}`)
+process.on("unhandledRejection", (error) => {
+  console.error("Unhandled promise rejection:", error)
+})
+
+process.on("uncaughtException", (error) => {
+  console.error("Uncaught exception:", error)
+  process.exit(1)
+})
+
+app.listen(env.port, host, () => {
+  console.log(`cure&care API running on 0.0.0.0:${env.port}`)
 })

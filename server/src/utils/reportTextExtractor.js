@@ -1,9 +1,9 @@
 import { createRequire } from "module"
-import { PDFParse } from "pdf-parse"
-import { createWorker } from "tesseract.js"
 
 const require = createRequire(import.meta.url)
-const englishOcrData = require("@tesseract.js-data/eng")
+let pdfParseModule
+let tesseractModule
+let englishOcrData
 
 function isTextFile(file) {
   return file?.mimetype?.startsWith("text/") || file?.mimetype === "application/csv" || file?.originalname?.toLowerCase().endsWith(".csv")
@@ -18,6 +18,10 @@ function isImage(file) {
 }
 
 async function recognizeImageBuffer(buffer) {
+  tesseractModule ||= await import("tesseract.js")
+  englishOcrData ||= require("@tesseract.js-data/eng")
+
+  const { createWorker } = tesseractModule
   const worker = await createWorker(englishOcrData.code, undefined, {
     gzip: englishOcrData.gzip,
     langPath: englishOcrData.langPath,
@@ -32,6 +36,8 @@ async function recognizeImageBuffer(buffer) {
 }
 
 async function extractPdfText(file) {
+  pdfParseModule ||= await import("pdf-parse")
+  const { PDFParse } = pdfParseModule
   const parser = new PDFParse({ data: file.buffer })
 
   try {
