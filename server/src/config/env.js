@@ -21,4 +21,5 @@ export const env = {
   aiServiceUrl: process.env.AI_SERVICE_URL || "http://localhost:8000",
   openAiApiKey: process.env.OPENAI_API_KEY || "",
   openAiModel: process.env.OPENAI_MODEL || "gpt-4o-mini",
+  enableOcr: process.env.ENABLE_OCR === "true",
 }
