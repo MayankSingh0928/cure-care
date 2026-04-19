@@ -9,10 +9,10 @@ dotenv.config({ path: path.resolve(__dirname, "../../../.env") })
 dotenv.config()
 
 export const env = {
-  port: process.env.PORT,
-  clientUrl: process.env.CLIENT_URL,
-  corsOrigins: process.env.CORS_ORIGINS,
+  port: process.env.PORT || 5000,
+  clientUrl: process.env.CLIENT_URL || "http://localhost:5173",
+  corsOrigins: process.env.CORS_ORIGINS || "",
   openFdaEventUrl: process.env.OPENFDA_EVENT_URL || "https://api.fda.gov/drug/event.json",
-  openAiApiKey: process.env.OPENAI_API_KEY,
+  openAiApiKey: process.env.OPENAI_API_KEY || "",
   openAiModel: process.env.OPENAI_MODEL || "gpt-4o-mini",
 }

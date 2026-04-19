@@ -8,7 +8,7 @@ import drugApiRoutes from "./routes/drugApiRoutes.js"
 const app = express()
 const host = "0.0.0.0"
 
-const configuredOrigins = [env.clientUrl, ...env.corsOrigins.split(",")]
+const configuredOrigins = [env.clientUrl, ...(env.corsOrigins || "").split(",")]
   .map((origin) => origin.trim())
   .filter(Boolean)
 
