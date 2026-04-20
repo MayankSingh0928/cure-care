@@ -50,13 +50,6 @@ export default function Home({ onNavigate }) {
               Find doctor <SearchCheck size={18} />
             </button>
           </div>
-          <div className="mt-8 grid max-w-xl grid-cols-1 gap-3 text-center min-[420px]:grid-cols-3">
-            {["OpenAI ready", "OpenFDA fallback", "Hindi toggle"].map((item) => (
-              <div key={item} className="rounded-lg border border-slate-200 bg-white/70 px-3 py-3 text-xs font-black uppercase tracking-wide text-slate-600 shadow-sm">
-                {item}
-              </div>
-            ))}
-          </div>
         </div>
 
         <div className="relative z-10 flex min-h-[430px] items-end justify-center sm:min-h-[500px] lg:min-h-[540px] lg:justify-start lg:pl-8 xl:pl-10">
