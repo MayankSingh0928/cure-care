@@ -14,18 +14,41 @@ const pages = {
   dashboard: Dashboard,
 }
 
+const pageRoutes = {
+  home: "/",
+  interactions: "/medicine-guide",
+  symptoms: "/care-guidance",
+  blood: "/blood-report",
+  dashboard: "/dashboard",
+}
+
+const routePages = Object.fromEntries(Object.entries(pageRoutes).map(([page, route]) => [route, page]))
+
+function currentPageFromLocation() {
+  const hashPage = window.location.hash.replace("#", "")
+  if (pages[hashPage]) return hashPage
+
+  const normalizedPath = window.location.pathname.replace(/\/+$/, "") || "/"
+  return routePages[normalizedPath] || "home"
+}
+
 export default function App() {
-  const [currentPage, setCurrentPage] = useState(window.location.hash.replace("#", "") || "home")
+  const [currentPage, setCurrentPage] = useState(currentPageFromLocation)
   const Page = pages[currentPage] || Home
 
   useEffect(() => {
-    const handleHashChange = () => setCurrentPage(window.location.hash.replace("#", "") || "home")
-    window.addEventListener("hashchange", handleHashChange)
-    return () => window.removeEventListener("hashchange", handleHashChange)
+    const handleLocationChange = () => setCurrentPage(currentPageFromLocation())
+    window.addEventListener("popstate", handleLocationChange)
+    window.addEventListener("hashchange", handleLocationChange)
+    return () => {
+      window.removeEventListener("popstate", handleLocationChange)
+      window.removeEventListener("hashchange", handleLocationChange)
+    }
   }, [])
 
   function navigate(page) {
-    window.location.hash = page
+    const route = pageRoutes[page] || "/"
+    window.history.pushState({}, "", route)
     setCurrentPage(page)
   }
 

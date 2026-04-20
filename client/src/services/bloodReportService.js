@@ -1,4 +1,4 @@
-import { request } from "./api"
+import { requestWithFallback } from "./api"
 
 export function analyzeBloodReport({ file, text, language }) {
   const formData = new FormData()
@@ -10,14 +10,14 @@ export function analyzeBloodReport({ file, text, language }) {
   formData.append("text", text || "")
   formData.append("language", language)
 
-  return request("/blood-reports/analyze", {
+  return requestWithFallback("/features/blood-report/analyze", "/blood-reports/analyze", {
     method: "POST",
     body: formData,
   })
 }
 
 export function getBloodReportHistory() {
-  return request("/blood-reports/history")
+  return requestWithFallback("/features/blood-report/history", "/blood-reports/history")
 }
 
 export const getBloodHistory = getBloodReportHistory

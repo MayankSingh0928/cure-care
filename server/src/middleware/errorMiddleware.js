@@ -6,7 +6,19 @@ export function notFound(req, res, next) {
 
 export function errorHandler(error, req, res, next) {
   const statusCode = error.statusCode || 500
+  const message = error.message || "Server error"
+
   res.status(statusCode).json({
-    message: error.message || "Server error",
+    success: false,
+    message,
+    error: {
+      code: error.code || (statusCode === 404 ? "NOT_FOUND" : "REQUEST_FAILED"),
+      message,
+      status: statusCode,
+      path: req.originalUrl,
+      method: req.method,
+      timestamp: new Date().toISOString(),
+      requestId: req.requestId,
+    },
   })
 }

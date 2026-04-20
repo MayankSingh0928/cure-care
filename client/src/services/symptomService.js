@@ -1,12 +1,12 @@
-import { request } from "./api"
+import { requestWithFallback } from "./api"
 
 export function analyzeSymptoms(payload) {
-  return request("/symptoms/analyze", {
+  return requestWithFallback("/features/care-guidance/analyze", "/symptoms/analyze", {
     method: "POST",
     body: JSON.stringify(payload),
   })
 }
 
 export function getSymptomHistory() {
-  return request("/symptoms/history")
+  return requestWithFallback("/features/care-guidance/history", "/symptoms/history")
 }

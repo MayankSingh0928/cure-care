@@ -13,3 +13,15 @@ export async function request(path, options = {}) {
 
   return data
 }
+
+export async function requestWithFallback(path, fallbackPath, options = {}) {
+  try {
+    return await request(path, options)
+  } catch (error) {
+    if (!fallbackPath || !error.message?.toLowerCase().includes("route not found")) {
+      throw error
+    }
+
+    return request(fallbackPath, options)
+  }
+}

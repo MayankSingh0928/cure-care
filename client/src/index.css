@@ -29,6 +29,17 @@ button {
   font: inherit;
 }
 
+button {
+  cursor: pointer;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+}
+
 button,
 a,
 input,
@@ -105,15 +116,15 @@ textarea {
   }
 
   .field {
-    @apply rounded-lg border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10;
+    @apply w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10;
   }
 
   .primary-button {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-slate-950 px-5 py-3 font-bold text-white shadow-lg shadow-cyan-950/10 transition hover:-translate-y-0.5 hover:bg-cyan-700 active:translate-y-0;
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-slate-950 px-5 py-3 font-bold text-white shadow-lg shadow-cyan-950/10 transition hover:-translate-y-0.5 hover:bg-cyan-700 active:translate-y-0;
   }
 
   .secondary-button {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-5 py-3 font-bold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-cyan-300 hover:text-cyan-700 active:translate-y-0;
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-5 py-3 font-bold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-cyan-300 hover:text-cyan-700 active:translate-y-0;
   }
 
   .eyebrow {

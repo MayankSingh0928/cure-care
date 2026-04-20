@@ -1,14 +1,14 @@
-import { request } from "./api"
+import { requestWithFallback } from "./api"
 
 export function checkDrugInteractions(payload) {
-  return request("/drugs/check", {
+  return requestWithFallback("/features/medicine/check", "/drugs/check", {
     method: "POST",
     body: JSON.stringify(payload),
   })
 }
 
 export function getInteractionHistory() {
-  return request("/drugs/history")
+  return requestWithFallback("/features/medicine/history", "/drugs/history")
 }
 
 export const getDrugHistory = getInteractionHistory
