@@ -178,13 +178,21 @@ export default function SymptomGuidance() {
   const [loading, setLoading] = useState(false)
 
   async function runGuidance(nextLanguage = language) {
+    const trimmedProblem = problem.trim()
+
+    if (trimmedProblem.length < 3) {
+      setError(nextLanguage === "hi" ? "कृपया अपनी problem लिखें।" : "Please describe the problem.")
+      setResult(null)
+      return
+    }
+
     setError("")
     setResult(null)
     setLoading(true)
 
     try {
       const data = await analyzeSymptoms({
-        problem,
+        problem: trimmedProblem,
         duration,
         age: age ? Number(age) : null,
         gender,

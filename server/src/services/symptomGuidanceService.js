@@ -227,8 +227,8 @@ export async function getSymptomGuidance(payload = {}) {
   const language = payload.language === "hi" ? "hi" : "en"
   const conditions = splitValues(payload.conditions)
 
-  if (problem.length < 10) {
-    const error = new Error(language === "hi" ? "कृपया अपनी problem थोड़ी detail में लिखें।" : "Please describe the problem in a little more detail.")
+  if (problem.length < 3) {
+    const error = new Error(language === "hi" ? "कृपया अपनी problem लिखें।" : "Please describe the problem.")
     error.statusCode = 400
     throw error
   }
