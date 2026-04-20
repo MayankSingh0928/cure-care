@@ -1,73 +1,15 @@
-import { env } from "../config/env.js"
 import { safeJsonFetch } from "../utils/apiHelper.js"
-import { scoreInteraction } from "../utils/riskCalculator.js"
-import { findCsvInteractions, normalizeDrugName } from "./csvDrugService.js"
 import { summarizeSingleDrugWithOpenAI } from "./openaiService.js"
-
-const curatedRules = [
-  {
-    drugs: ["warfarin", "ibuprofen"],
-    severity: "high",
-    description: "Combining warfarin with ibuprofen can significantly increase bleeding risk, including gastrointestinal bleeding.",
-    mechanism: "Warfarin reduces clotting and ibuprofen can irritate the stomach lining and affect platelet function.",
-    recommendation: "Avoid routine combined use unless a clinician specifically approves it. Consider acetaminophen when appropriate and monitor for bleeding.",
-    patientLanguage: "This combination can make bleeding more likely. Black stools, unusual bruising, vomiting blood, or severe weakness need urgent care.",
-  },
-  {
-    drugs: ["clonidine", "propranolol"],
-    severity: "high",
-    description: "Sudden clonidine withdrawal while taking propranolol can cause dangerous rebound hypertension.",
-    mechanism: "Clonidine withdrawal may sharply increase sympathetic tone while propranolol blocks beta compensation, leaving alpha vasoconstriction unopposed.",
-    recommendation: "Do not stop clonidine suddenly. Taper only under medical supervision and review beta-blocker timing with the prescriber.",
-    patientLanguage: "Stopping clonidine suddenly while on propranolol can cause a rapid and dangerous blood pressure rise within 24 to 72 hours.",
-  },
-  {
-    drugs: ["acetaminophen", "warfarin"],
-    severity: "moderate",
-    description: "Regular high-dose acetaminophen may increase INR and bleeding risk in patients taking warfarin.",
-    mechanism: "Chronic acetaminophen exposure may augment vitamin K antagonism and raise anticoagulation effect.",
-    recommendation: "Use the lowest effective dose, avoid prolonged high-dose use, and monitor INR when repeated dosing is needed.",
-    patientLanguage: "Repeated high doses can make warfarin stronger and increase bleeding risk.",
-  },
-]
 
 function normalize(value = "") {
   return value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim()
 }
 
-function findCuratedRules(drugs) {
-  const keys = drugs.map(normalize)
-  return curatedRules
-    .filter((rule) => rule.drugs.every((drug) => keys.includes(drug)))
-    .map((rule, index) => ({
-      id: `rule-${index}`,
-      drugs: rule.drugs.map(normalizeDrugName),
-      source: "Curated clinical rule",
-      ...rule,
-    }))
-}
-
-async function fetchOpenFdaSignal(drug) {
-  const query = encodeURIComponent(`patient.drug.medicinalproduct:"${drug}"`)
-  const url = `${env.openFdaEventUrl}?search=${query}&limit=1`
-  const response = await safeJsonFetch(url, { timeoutMs: 2500 })
-
-  if (!response.ok || !response.data?.results?.length) {
-    return null
-  }
-
-  const event = response.data.results[0]
-  const reaction = event.patient?.reaction?.[0]?.reactionmeddrapt || "reported adverse event"
-  return {
-    id: `openfda-${normalize(drug)}`,
-    drugs: [normalizeDrugName(drug)],
-    severity: "low",
-    description: `OpenFDA has adverse-event reports mentioning ${drug}; sample reaction: ${reaction}.`,
-    mechanism: "OpenFDA FAERS data is a signal source, not proof that the medicine caused the event.",
-    recommendation: "Use this as safety context only. Confirm clinically relevant interactions through the paired CSV/rule result and medical review.",
-    patientLanguage: "There are real-world adverse-event reports for this medicine, but this does not prove the medicine caused the event.",
-    source: "OpenFDA FAERS",
-  }
+function normalizeDrugName(value = "") {
+  return value
+    .trim()
+    .replace(/\s+/g, " ")
+    .replace(/\b\w/g, (letter) => letter.toUpperCase())
 }
 
 function firstText(value) {
@@ -78,13 +20,13 @@ function firstText(value) {
 function compactText(value, fallback) {
   const text = firstText(value).replace(/\s+/g, " ").trim()
   if (!text) return fallback
-  return text.length > 900 ? `${text.slice(0, 900).trim()}...` : text
+  return text.length > 700 ? `${text.slice(0, 700).trim()}...` : text
 }
 
 async function fetchOpenFdaLabel(drug) {
   const query = encodeURIComponent(`openfda.generic_name:"${drug}" OR openfda.brand_name:"${drug}" OR openfda.substance_name:"${drug}"`)
   const url = `https://api.fda.gov/drug/label.json?search=${query}&limit=1`
-  const response = await safeJsonFetch(url, { timeoutMs: 2500 })
+  const response = await safeJsonFetch(url, { timeoutMs: 3000 })
 
   if (!response.ok || !response.data?.results?.length) return null
   const label = response.data.results[0]
@@ -103,143 +45,263 @@ async function fetchOpenFdaLabel(drug) {
   }
 }
 
-function commonSingleDrugFallback(drug, language) {
-  const key = normalize(drug)
-  const en = {
+const commonMedicineInfo = {
+  en: {
     ibuprofen: {
-      medicine: normalizeDrugName(drug),
-      uses: ["Pain relief for headache, toothache, muscle pain, back pain, period pain, and minor injury pain.", "Fever reduction.", "Reduces inflammation in conditions such as sprain or arthritis symptoms."],
-      sideEffects: ["Stomach pain, acidity, nausea, vomiting, or indigestion.", "Dizziness, fluid retention, or increased blood pressure in some people.", "Can increase bleeding risk or kidney stress, especially with dehydration, kidney disease, blood thinners, or older age."],
-      seriousWarnings: ["Avoid or ask a doctor first if you have stomach ulcer/bleeding history, kidney disease, severe heart disease, are on blood thinners, or are pregnant unless advised.", "Seek urgent care for black stools, vomiting blood, chest pain, breathing trouble, swelling, severe rash, or reduced urination."],
-      safeUse: ["Use only as directed on the label or by a clinician; avoid combining with other NSAIDs such as naproxen or diclofenac unless advised.", "Take with food or milk if stomach upset occurs, and avoid alcohol when possible."],
+      category: "NSAID pain reliever",
+      uses: ["Pain relief for headache, toothache, muscle pain, back pain, period pain, and minor injury pain.", "Fever reduction.", "Helps reduce inflammation in sprains, strains, and arthritis symptoms."],
+      sideEffects: ["Stomach pain, acidity, nausea, vomiting, or indigestion.", "Dizziness, fluid retention, or increased blood pressure in some people.", "Kidney stress or bleeding risk, especially with dehydration, kidney disease, blood thinners, ulcers, or older age."],
+      seriousWarnings: ["Avoid or ask a doctor first if you have stomach ulcer or bleeding history, kidney disease, severe heart disease, take blood thinners, or are pregnant unless advised.", "Seek urgent care for black stools, vomiting blood, chest pain, breathing trouble, swelling, severe rash, or reduced urination."],
+      safeUse: ["Use only as directed on the label or by a clinician.", "Avoid combining with other NSAIDs such as naproxen or diclofenac unless a clinician advises it."],
+      ayurvedicRemedies: [
+        {
+          name: "Turmeric (Haridra)",
+          similarEffect: "May support mild inflammation relief.",
+          evidenceNote: "Curcumin has some clinical evidence for inflammatory pain, but it is not a direct replacement for ibuprofen.",
+          caution: "May increase bleeding tendency in some people and can interact with blood thinners. Avoid high doses before surgery unless approved.",
+        },
+        {
+          name: "Ginger (Adrak)",
+          similarEffect: "May help mild pain, nausea, and inflammatory discomfort.",
+          evidenceNote: "Evidence is strongest for nausea and modest for pain/inflammation.",
+          caution: "Use caution with blood thinners, bleeding disorders, gallstones, or stomach irritation.",
+        },
+      ],
     },
     paracetamol: {
-      medicine: normalizeDrugName(drug),
-      uses: ["Pain relief for headache, body pain, toothache, muscle pain, and minor aches.", "Fever reduction.", "Often used when NSAIDs are not suitable, but liver safety still matters."],
+      category: "Pain and fever medicine",
+      uses: ["Pain relief for headache, body pain, toothache, muscle pain, and minor aches.", "Fever reduction.", "Often used when NSAIDs are not suitable, though liver safety still matters."],
       sideEffects: ["Usually well tolerated when used correctly.", "Nausea, rash, or allergy can occur rarely.", "Too much can cause serious liver damage."],
-      seriousWarnings: ["Avoid overdose and avoid combining multiple products that contain paracetamol/acetaminophen.", "Ask a doctor first with liver disease, heavy alcohol use, or long-term use."],
-      safeUse: ["Follow label or clinician directions exactly.", "Check cold/flu medicines because many already contain paracetamol/acetaminophen."],
+      seriousWarnings: ["Avoid overdose and avoid combining multiple products that contain paracetamol or acetaminophen.", "Ask a doctor first with liver disease, heavy alcohol use, or long-term use."],
+      safeUse: ["Follow label or clinician directions exactly.", "Check cold and flu medicines because many already contain paracetamol or acetaminophen."],
+      ayurvedicRemedies: [
+        {
+          name: "Guduchi (Giloy)",
+          similarEffect: "Traditionally used for fever support and general wellness.",
+          evidenceNote: "Traditional use is common, but evidence is not equivalent to fever medicines.",
+          caution: "Avoid self-use in autoimmune disease, pregnancy, liver problems, or while taking immune-suppressing medicines unless a clinician approves.",
+        },
+        {
+          name: "Tulsi",
+          similarEffect: "May support comfort during mild cold, cough, and fever-like illness.",
+          evidenceNote: "Mostly supportive and traditional evidence; it does not replace fever evaluation when symptoms are significant.",
+          caution: "Use caution with blood thinners, diabetes medicines, pregnancy, or planned surgery.",
+        },
+      ],
     },
-    acetaminophen: null,
-  }
-  en.acetaminophen = en.paracetamol
-
-  if (language === "hi") {
-    const hi = {
-      ibuprofen: {
-        medicine: normalizeDrugName(drug),
-        uses: ["Headache, toothache, muscle pain, back pain, period pain और minor injury pain में pain relief.", "Fever कम करने में मदद.", "Sprain या arthritis symptoms जैसी inflammation में swelling/pain कम करने में मदद कर सकता है."],
-        sideEffects: ["Stomach pain, acidity, nausea, vomiting या indigestion.", "कुछ लोगों में dizziness, fluid retention या blood pressure बढ़ना.", "Dehydration, kidney disease, blood thinners या older age में bleeding risk और kidney stress बढ़ सकता है."],
-        seriousWarnings: ["Stomach ulcer/bleeding history, kidney disease, severe heart disease, blood thinners या pregnancy में doctor से पूछे बिना use न करें.", "Black stools, blood vomiting, chest pain, breathing trouble, swelling, severe rash या urine कम होने पर urgent care लें."],
-        safeUse: ["Label या doctor के निर्देश के अनुसार ही लें; naproxen/diclofenac जैसे दूसरे NSAIDs के साथ combine न करें जब तक doctor न कहें.", "Stomach upset हो तो food/milk के साथ लेना मदद कर सकता है; alcohol avoid करें."],
-      },
-      paracetamol: {
-        medicine: normalizeDrugName(drug),
-        uses: ["Headache, body pain, toothache, muscle pain और minor aches में pain relief.", "Fever कम करने में मदद.", "NSAIDs suitable न हों तब अक्सर use होता है, लेकिन liver safety जरूरी है."],
-        sideEffects: ["सही तरीके से लेने पर आमतौर पर tolerated होता है.", "Rarely nausea, rash या allergy हो सकती है.", "ज्यादा मात्रा liver damage कर सकती है."],
-        seriousWarnings: ["Overdose avoid करें और paracetamol/acetaminophen वाले multiple products साथ न लें.", "Liver disease, heavy alcohol use या long-term use में doctor से पूछें."],
-        safeUse: ["Label या clinician directions exactly follow करें.", "Cold/flu medicines check करें क्योंकि उनमें भी paracetamol/acetaminophen हो सकता है."],
-      },
-      acetaminophen: null,
-    }
-    hi.acetaminophen = hi.paracetamol
-    return hi[key] || null
-  }
-
-  return en[key] || null
+    cetirizine: {
+      category: "Antihistamine",
+      uses: ["Relief from allergy symptoms such as sneezing, runny nose, itchy eyes, and itching.", "Can help hives or allergic skin itching.", "May be used for seasonal or dust-related allergies."],
+      sideEffects: ["Sleepiness or tiredness.", "Dry mouth, headache, dizziness, or stomach discomfort.", "Rarely, restlessness or difficulty urinating."],
+      seriousWarnings: ["Ask a doctor first with kidney disease, severe liver disease, urinary retention, pregnancy, or breastfeeding.", "Avoid driving or alcohol if it makes you sleepy."],
+      safeUse: ["Use as directed and avoid taking extra doses for faster relief.", "Check with a pharmacist before combining with other allergy or sleep medicines."],
+      ayurvedicRemedies: [
+        {
+          name: "Tulsi",
+          similarEffect: "Traditionally used for respiratory comfort and allergy-like congestion.",
+          evidenceNote: "May support symptoms, but it is not a direct antihistamine substitute.",
+          caution: "Use caution with blood thinners, diabetes medicines, pregnancy, or planned surgery.",
+        },
+        {
+          name: "Steam inhalation with plain water",
+          similarEffect: "May ease nasal congestion and throat irritation.",
+          evidenceNote: "Supportive comfort measure; it does not treat severe allergy or asthma.",
+          caution: "Avoid burns. Do not use hot steam for small children without medical guidance.",
+        },
+      ],
+    },
+  },
+  hi: {
+    ibuprofen: {
+      category: "NSAID दर्द निवारक",
+      uses: ["सिरदर्द, दांत दर्द, मांसपेशियों के दर्द, पीठ दर्द, माहवारी के दर्द और हल्की चोट के दर्द में राहत।", "बुखार कम करने में मदद।", "मोच, खिंचाव और गठिया जैसे लक्षणों में सूजन और दर्द कम करने में मदद कर सकता है।"],
+      sideEffects: ["पेट दर्द, एसिडिटी, मतली, उल्टी या अपच।", "कुछ लोगों में चक्कर, शरीर में पानी रुकना या ब्लड प्रेशर बढ़ना।", "डिहाइड्रेशन, किडनी रोग, ब्लड थिनर, अल्सर या ज्यादा उम्र में किडनी पर तनाव और खून बहने का जोखिम बढ़ सकता है।"],
+      seriousWarnings: ["पेट के अल्सर या ब्लीडिंग, किडनी रोग, गंभीर हृदय रोग, ब्लड थिनर लेने या गर्भावस्था में डॉक्टर से पूछे बिना न लें।", "काला मल, खून की उल्टी, छाती में दर्द, सांस में दिक्कत, सूजन, तेज रैश या पेशाब कम होने पर तुरंत चिकित्सा सहायता लें।"],
+      safeUse: ["लेबल या डॉक्टर के निर्देश के अनुसार ही लें।", "Naproxen या diclofenac जैसे दूसरे NSAIDs के साथ डॉक्टर की सलाह के बिना न मिलाएं।"],
+      ayurvedicRemedies: [
+        {
+          name: "हल्दी (हरिद्रा)",
+          similarEffect: "हल्की सूजन और दर्द में सहायक हो सकती है।",
+          evidenceNote: "Curcumin पर सूजन वाले दर्द में कुछ क्लिनिकल evidence है, लेकिन यह ibuprofen का सीधा विकल्प नहीं है।",
+          caution: "कुछ लोगों में खून बहने की प्रवृत्ति बढ़ा सकती है और blood thinners से interaction हो सकता है। surgery से पहले high dose न लें।",
+        },
+        {
+          name: "अदरक",
+          similarEffect: "हल्के दर्द, मतली और inflammatory discomfort में मदद कर सकता है।",
+          evidenceNote: "Evidence nausea के लिए बेहतर और pain/inflammation के लिए सीमित है।",
+          caution: "Blood thinners, bleeding disorder, gallstones या पेट में जलन हो तो सावधानी रखें।",
+        },
+      ],
+    },
+    paracetamol: {
+      category: "दर्द और बुखार की दवा",
+      uses: ["सिरदर्द, शरीर दर्द, दांत दर्द, मांसपेशियों के दर्द और हल्के दर्द में राहत।", "बुखार कम करने में मदद।", "NSAIDs suitable न हों तो अक्सर इस्तेमाल होती है, लेकिन liver safety जरूरी है।"],
+      sideEffects: ["सही मात्रा में लेने पर आमतौर पर ठीक सहन होती है।", "कभी-कभी मतली, रैश या allergy हो सकती है।", "ज्यादा मात्रा liver को गंभीर नुकसान पहुंचा सकती है।"],
+      seriousWarnings: ["Overdose से बचें और paracetamol/acetaminophen वाले कई products साथ में न लें।", "Liver disease, heavy alcohol use या लंबे समय तक इस्तेमाल में डॉक्टर से पूछें।"],
+      safeUse: ["लेबल या clinician directions exactly follow करें।", "Cold/flu medicines check करें क्योंकि उनमें भी paracetamol/acetaminophen हो सकता है।"],
+      ayurvedicRemedies: [
+        {
+          name: "गुडूची (गिलोय)",
+          similarEffect: "परंपरागत रूप से fever support और general wellness के लिए इस्तेमाल।",
+          evidenceNote: "Traditional use common है, पर इसका evidence fever medicines के बराबर नहीं है।",
+          caution: "Autoimmune disease, pregnancy, liver problems या immune-suppressing medicines में doctor की सलाह के बिना न लें।",
+        },
+        {
+          name: "तुलसी",
+          similarEffect: "हल्की सर्दी, खांसी और fever-like illness में comfort support दे सकती है।",
+          evidenceNote: "Evidence mainly supportive/traditional है; गंभीर symptoms में fever evaluation का विकल्प नहीं है।",
+          caution: "Blood thinners, diabetes medicines, pregnancy या planned surgery में सावधानी रखें।",
+        },
+      ],
+    },
+    cetirizine: {
+      category: "Antihistamine",
+      uses: ["छींक, नाक बहना, आंखों में खुजली और itching जैसे allergy symptoms में राहत।", "Hives या allergic skin itching में मदद कर सकती है।", "Seasonal या dust allergy में इस्तेमाल हो सकती है।"],
+      sideEffects: ["नींद या थकान।", "मुंह सूखना, सिरदर्द, चक्कर या पेट की परेशानी।", "कभी-कभी restlessness या पेशाब में कठिनाई।"],
+      seriousWarnings: ["Kidney disease, severe liver disease, urinary retention, pregnancy या breastfeeding में पहले doctor से पूछें।", "यदि नींद आती है तो driving और alcohol से बचें।"],
+      safeUse: ["निर्देश के अनुसार लें और जल्दी असर के लिए extra dose न लें।", "दूसरी allergy या sleep medicines के साथ लेने से पहले pharmacist से पूछें।"],
+      ayurvedicRemedies: [
+        {
+          name: "तुलसी",
+          similarEffect: "Respiratory comfort और allergy-like congestion में परंपरागत रूप से इस्तेमाल।",
+          evidenceNote: "Symptoms support कर सकती है, लेकिन direct antihistamine substitute नहीं है।",
+          caution: "Blood thinners, diabetes medicines, pregnancy या planned surgery में सावधानी रखें।",
+        },
+        {
+          name: "सादे पानी की भाप",
+          similarEffect: "नाक बंद और गले की irritation में आराम दे सकती है।",
+          evidenceNote: "यह supportive comfort measure है; severe allergy या asthma का treatment नहीं है।",
+          caution: "जलने से बचें। छोटे बच्चों में medical guidance के बिना hot steam न दें।",
+        },
+      ],
+    },
+  },
 }
 
-function fallbackSingleDrugInfo(drug, fdaInfo, language) {
-  const common = commonSingleDrugFallback(drug, language)
-  if (common) {
-    return {
-      ...common,
-      source: "Curated medicine summary",
-      disclaimer: language === "hi" ? "यह जानकारी educational है। Medicine शुरू/बंद/बदलने से पहले doctor/pharmacist से सलाह लें।" : "This information is educational. Ask a doctor or pharmacist before starting, stopping, or changing medicine.",
-    }
-  }
+commonMedicineInfo.en.acetaminophen = commonMedicineInfo.en.paracetamol
+commonMedicineInfo.hi.acetaminophen = commonMedicineInfo.hi.paracetamol
 
-  if (language === "hi") {
-    return {
-      medicine: normalizeDrugName(drug),
-      uses: [compactText(fdaInfo?.indicationsAndUsage || fdaInfo?.purpose, "OpenFDA label में uses साफ उपलब्ध नहीं हैं। इस medicine का use doctor/pharmacist से confirm करें।")],
-      sideEffects: [compactText(fdaInfo?.adverseReactions, "OpenFDA label में side effects साफ उपलब्ध नहीं हैं।")],
-      seriousWarnings: [compactText(fdaInfo?.warnings || fdaInfo?.doNotUse || fdaInfo?.stopUse, "Warning details clearly available नहीं हैं। Allergy, severe rash, breathing trouble या unusual symptoms में medical help लें।")],
-      safeUse: [compactText(fdaInfo?.askDoctor, "Existing disease, pregnancy, kidney/liver problem या other medicines हों तो doctor/pharmacist से पूछें।")],
-      source: fdaInfo ? "OpenFDA drug label" : "General safety fallback",
-      disclaimer: "यह जानकारी educational है। Medicine शुरू/बंद/बदलने से पहले doctor/pharmacist से सलाह लें।",
-    }
-  }
+function commonFallback(drug, language) {
+  const key = normalize(drug)
+  const info = commonMedicineInfo[language]?.[key]
+  if (!info) return null
 
   return {
     medicine: normalizeDrugName(drug),
-    uses: [compactText(fdaInfo?.indicationsAndUsage || fdaInfo?.purpose, "Uses were not clearly available from OpenFDA for this medicine. Confirm the intended use with a doctor or pharmacist.")],
-    sideEffects: [compactText(fdaInfo?.adverseReactions, "Side effects were not clearly available from OpenFDA.")],
-    seriousWarnings: [compactText(fdaInfo?.warnings || fdaInfo?.doNotUse || fdaInfo?.stopUse, "Warning details were not clearly available. Seek medical help for allergy, severe rash, breathing trouble, or unusual symptoms.")],
-    safeUse: [compactText(fdaInfo?.askDoctor, "Ask a doctor or pharmacist if you have existing disease, pregnancy, kidney/liver problems, or take other medicines.")],
-    source: fdaInfo ? "OpenFDA drug label" : "General safety fallback",
-    disclaimer: "This information is educational. Ask a doctor or pharmacist before starting, stopping, or changing medicine.",
+    source: "Curated medicine summary",
+    disclaimer:
+      language === "hi"
+        ? "यह जानकारी केवल शिक्षा के लिए है। दवा शुरू, बंद या बदलने से पहले doctor/pharmacist से सलाह लें। आयुर्वेदिक उपाय prescription medicine का direct replacement नहीं हैं।"
+        : "This information is educational. Ask a doctor or pharmacist before starting, stopping, or changing medicine. Ayurvedic remedies are not direct replacements for prescribed medicine.",
+    ...info,
   }
 }
 
-async function getSingleDrugInfo(drug, language = "en") {
-  const fdaInfo = await fetchOpenFdaLabel(drug)
-  const aiSummary = await summarizeSingleDrugWithOpenAI({ drug, fdaInfo, language })
-  const info = aiSummary.available ? { ...aiSummary.data, source: fdaInfo ? "OpenAI summary of OpenFDA label" : "OpenAI medicine summary" } : fallbackSingleDrugInfo(drug, fdaInfo, language)
+function labelFallback(drug, fdaInfo, language) {
+  const isHindi = language === "hi"
 
   return {
-    normalizedDrugs: [normalizeDrugName(drug)],
-    interactions: [],
-    singleDrugInfo: info,
-    sourceSummary: info.source,
-    coverageNotice:
-      "Single-medicine information is educational and may not include every risk, contraindication, dose limit, or patient-specific warning. Verify with a clinician or pharmacist.",
+    medicine: normalizeDrugName(drug),
+    category: isHindi ? "दवा" : "Medicine",
+    uses: [
+      compactText(
+        fdaInfo?.indicationsAndUsage || fdaInfo?.purpose,
+        isHindi ? "OpenFDA label में uses साफ उपलब्ध नहीं हैं। intended use doctor/pharmacist से confirm करें।" : "Uses were not clearly available from OpenFDA. Confirm the intended use with a doctor or pharmacist.",
+      ),
+    ],
+    sideEffects: [
+      compactText(
+        fdaInfo?.adverseReactions,
+        isHindi ? "OpenFDA label में side effects साफ उपलब्ध नहीं हैं।" : "Side effects were not clearly available from OpenFDA.",
+      ),
+    ],
+    seriousWarnings: [
+      compactText(
+        fdaInfo?.warnings || fdaInfo?.doNotUse || fdaInfo?.stopUse,
+        isHindi ? "Warning details साफ उपलब्ध नहीं हैं। Allergy, severe rash, breathing trouble या unusual symptoms में medical help लें।" : "Warning details were not clearly available. Seek medical help for allergy, severe rash, breathing trouble, or unusual symptoms.",
+      ),
+    ],
+    safeUse: [
+      compactText(
+        fdaInfo?.askDoctor,
+        isHindi ? "Existing disease, pregnancy, kidney/liver problem या other medicines हों तो doctor/pharmacist से पूछें।" : "Ask a doctor or pharmacist if you have existing disease, pregnancy, kidney/liver problems, or take other medicines.",
+      ),
+    ],
+    ayurvedicRemedies: [
+      {
+        name: isHindi ? "व्यक्तिगत आयुर्वेदिक सलाह" : "Individual Ayurvedic advice",
+        similarEffect: isHindi ? "इस medicine जैसा effect condition पर depend करता है।" : "A similar effect depends on the condition this medicine is being used for.",
+        evidenceNote: isHindi ? "AI या clinician review के बिना इस drug के लिए specific Ayurvedic alternative तय नहीं किया गया।" : "A specific Ayurvedic option was not selected for this drug without AI or clinician review.",
+        caution: isHindi ? "Prescription medicine को ayurvedic remedy से replace न करें। Qualified clinician से सलाह लें।" : "Do not replace prescribed medicine with a remedy. Ask a qualified clinician.",
+      },
+    ],
+    source: fdaInfo ? "OpenFDA drug label" : "General safety fallback",
+    disclaimer: isHindi
+      ? "यह जानकारी केवल शिक्षा के लिए है। दवा शुरू, बंद या बदलने से पहले doctor/pharmacist से सलाह लें।"
+      : "This information is educational. Ask a doctor or pharmacist before starting, stopping, or changing medicine.",
   }
 }
 
-function uniqueInteractions(interactions) {
-  const seen = new Set()
-  return interactions.filter((interaction) => {
-    const key = `${interaction.source}:${interaction.drugs.map(normalize).sort().join("|")}:${interaction.description}`
-    if (seen.has(key)) return false
-    seen.add(key)
-    return true
-  })
+function normalizeMedicineInfo(info, drug, fdaInfo, language) {
+  const fallback = commonFallback(drug, language) || labelFallback(drug, fdaInfo, language)
+
+  return {
+    ...fallback,
+    ...info,
+    medicine: info?.medicine || fallback.medicine,
+    category: info?.category || fallback.category,
+    uses: Array.isArray(info?.uses) && info.uses.length ? info.uses : fallback.uses,
+    sideEffects: Array.isArray(info?.sideEffects) && info.sideEffects.length ? info.sideEffects : fallback.sideEffects,
+    seriousWarnings: Array.isArray(info?.seriousWarnings) && info.seriousWarnings.length ? info.seriousWarnings : fallback.seriousWarnings,
+    safeUse: Array.isArray(info?.safeUse) && info.safeUse.length ? info.safeUse : fallback.safeUse,
+    ayurvedicRemedies: Array.isArray(info?.ayurvedicRemedies) && info.ayurvedicRemedies.length ? info.ayurvedicRemedies : fallback.ayurvedicRemedies,
+    disclaimer: info?.disclaimer || fallback.disclaimer,
+  }
 }
 
-export async function checkInteractions(payload) {
-  const drugs = [...new Set((payload.drugs || []).map(normalizeDrugName).filter(Boolean))]
-  const language = payload.language || "en"
+export async function checkInteractions(payload = {}) {
+  const medicine = normalizeDrugName(payload.medicine || payload.drugs?.[0] || "")
+  const language = payload.language === "hi" ? "hi" : "en"
 
-  if (drugs.length === 1) {
-    return getSingleDrugInfo(drugs[0], language)
-  }
-
-  if (drugs.length < 2) {
-    const error = new Error("Add at least two medicines to check interactions.")
+  if (!medicine) {
+    const error = new Error(language === "hi" ? "दवा का नाम जरूरी है।" : "Medicine name is required.")
     error.statusCode = 400
     throw error
   }
 
-  const csvMatches = findCsvInteractions(drugs)
-  const curatedMatches = findCuratedRules(drugs)
-  const shouldFetchOpenFdaSignals = csvMatches.length === 0 && curatedMatches.length === 0
-  const openFdaSignals = shouldFetchOpenFdaSignals ? (await Promise.all(drugs.slice(0, 4).map(fetchOpenFdaSignal))).filter(Boolean) : []
+  const fdaInfo = await fetchOpenFdaLabel(medicine)
+  const aiSummary = await summarizeSingleDrugWithOpenAI({
+    drug: medicine,
+    fdaInfo,
+    language,
+    patientContext: {
+      age: payload.age || null,
+      conditions: payload.conditions || [],
+    },
+  })
 
-  const interactions = uniqueInteractions([...curatedMatches, ...csvMatches, ...openFdaSignals]).map((interaction) => ({
-    ...interaction,
-    riskPercentage: scoreInteraction({
-      severity: interaction.severity,
-      age: payload.age,
-      renalImpairment: payload.renalImpairment,
-    }),
-  }))
+  const source = aiSummary.available
+    ? fdaInfo
+      ? "OpenAI summary of OpenFDA label and Ayurvedic knowledge"
+      : "OpenAI medicine and Ayurvedic summary"
+    : commonFallback(medicine, language)
+      ? "Curated medicine summary"
+      : fdaInfo
+        ? "OpenFDA drug label"
+        : "General safety fallback"
+
+  const medicineInfo = normalizeMedicineInfo(aiSummary.available ? aiSummary.data : null, medicine, fdaInfo, language)
+  medicineInfo.source = source
 
   return {
-    normalizedDrugs: drugs,
-    interactions,
-    sourceSummary: shouldFetchOpenFdaSignals ? "Curated rules + CSV dataset + OpenFDA FAERS signal lookup" : "Curated rules + CSV dataset",
+    normalizedDrugs: [medicine],
+    medicineInfo,
+    singleDrugInfo: medicineInfo,
+    interactions: [],
+    sourceSummary: source,
     coverageNotice:
-      "OpenFDA FAERS is an adverse-event signal source, not a complete drug-drug interaction database. Treat results as decision support and verify clinically.",
+      language === "hi"
+        ? "यह educational information है। Side effects, contraindications, dose limits और patient-specific risks complete नहीं हो सकते। दवा या आयुर्वेदिक remedy शुरू/बंद/बदलने से पहले clinician/pharmacist से सलाह लें।"
+        : "This is educational information. Side effects, contraindications, dose limits, and patient-specific risks may be incomplete. Ask a clinician or pharmacist before starting, stopping, or changing a medicine or Ayurvedic remedy.",
   }
 }

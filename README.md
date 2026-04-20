@@ -1,13 +1,13 @@
-# cure&care Drug Safety Checker
+# cure&care Medicine Guide
 
-cure&care is a production-oriented starter for drug interaction screening and blood report analysis. It is split into a React client and an Express API.
+cure&care is a production-oriented starter for medicine information lookup and blood report analysis. It is split into a React client and an Express API.
 
 ## What Works
 
-- Drug interaction checker using curated safety rules, the supplied `drug_interactions.csv`, and OpenFDA FAERS signal lookup.
+- Medicine guide with uses, side effects, warnings, safe-use guidance, and similar-effect Ayurvedic remedies.
 - Blood report workflow with upload/text input and English/Hindi output.
 - Blood report extraction for pasted text, TXT, CSV, PDF text, and OCR-readable JPG/PNG images.
-- AI-style blood report response with prevention, cure direction, remedies, possible cause, medicine guidance, and risk percentage.
+- AI-style medicine and blood report responses when OpenAI is configured, with local fallbacks.
 - Dashboard history for recent checks while the server process is running.
 - No login or authentication requirement; all tools are directly usable.
 - Clean API, service, route, controller, middleware, and data folders.
@@ -42,4 +42,4 @@ Optional OpenAI enrichment works only when an API key is configured.
 
 ## Trust And Safety
 
-This project should be presented as clinical decision support, not a diagnostic or prescribing authority. OpenFDA FAERS is used for adverse-event signals, not definitive drug-drug interaction proof. The CSV and curated rules improve coverage for known examples, but final decisions must be verified by a doctor or pharmacist.
+This project should be presented as educational clinical decision support, not a diagnostic or prescribing authority. Medicine details, Ayurvedic remedies, and blood report summaries may be incomplete and must be verified by a doctor or pharmacist.

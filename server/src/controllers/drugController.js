@@ -8,7 +8,8 @@ export async function checkDrugInteractions(req, res, next) {
     logs.unshift({
       id: crypto.randomUUID(),
       drugs: result.normalizedDrugs,
-      interactionCount: result.interactions.length,
+      medicine: result.medicineInfo?.medicine || result.normalizedDrugs[0],
+      language: req.body?.language || "en",
       createdAt: new Date().toISOString(),
     })
     res.json(result)

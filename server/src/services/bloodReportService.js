@@ -734,3 +734,4 @@ export async function analyzeBloodReport({ text = "", file, language = "en" }) {
     medicine: copy.medicine,
   }
 }
+

@@ -4,10 +4,12 @@ import BloodReportCheck from "./pages/BloodReportCheck"
 import Dashboard from "./pages/Dashboard"
 import Home from "./pages/Home"
 import InteractionCheck from "./pages/InteractionCheck"
+import SymptomGuidance from "./pages/SymptomGuidance"
 
 const pages = {
   home: Home,
   interactions: InteractionCheck,
+  symptoms: SymptomGuidance,
   blood: BloodReportCheck,
   dashboard: Dashboard,
 }

@@ -23,7 +23,7 @@ export default function Dashboard() {
           <div>
             <p className="eyebrow">Care activity</p>
             <h1 className="mt-2 text-3xl font-black tracking-tight text-slate-950">Clinical Dashboard</h1>
-            <p className="mt-2 text-sm leading-6 text-slate-600">Recent interaction checks and blood report analyses from this running backend.</p>
+            <p className="mt-2 text-sm leading-6 text-slate-600">Recent medicine lookups and blood report analyses from this running backend.</p>
           </div>
         </div>
       </section>
@@ -34,14 +34,14 @@ export default function Dashboard() {
             <span className="grid h-10 w-10 place-items-center rounded-lg bg-cyan-50 text-cyan-700">
               <Activity className="h-5 w-5" />
             </span>
-            <h2 className="text-xl font-black tracking-tight text-slate-950">Drug interaction history</h2>
+            <h2 className="text-xl font-black tracking-tight text-slate-950">Medicine lookup history</h2>
           </div>
           <div className="mt-4 grid gap-3">
             {drugHistory.length ? (
               drugHistory.map((log) => (
                 <div key={log.id} className="rounded-lg border border-slate-200 bg-slate-50 p-4 transition hover:-translate-y-0.5 hover:bg-white hover:shadow-sm">
-                  <p className="font-bold text-slate-950">{log.drugs.join(" + ")}</p>
-                  <p className="text-sm text-slate-500">{log.interactionCount} interaction(s) - {formatDate(log.createdAt)}</p>
+                  <p className="font-bold text-slate-950">{log.medicine || log.drugs.join(" + ")}</p>
+                  <p className="text-sm text-slate-500">{(log.language || "en").toUpperCase()} - {formatDate(log.createdAt)}</p>
                 </div>
               ))
             ) : (

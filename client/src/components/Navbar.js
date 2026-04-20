@@ -1,8 +1,9 @@
-import { Activity, FileText, Home, LayoutDashboard, Shield, Sparkles } from "lucide-react"
+import { Activity, FileText, Home, LayoutDashboard, SearchCheck, Shield, Sparkles } from "lucide-react"
 
 const items = [
   { id: "home", label: "Home", icon: Home },
-  { id: "interactions", label: "Drug Check", icon: Shield },
+  { id: "interactions", label: "Medicine Guide", icon: Shield },
+  { id: "symptoms", label: "Care Guidance", icon: SearchCheck },
   { id: "blood", label: "Blood Report", icon: FileText },
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
 ]
@@ -17,7 +18,7 @@ export default function Navbar({ currentPage, onNavigate }) {
           </span>
           <div>
             <p className="text-lg font-black tracking-tight text-slate-950">cure&amp;care</p>
-            <p className="text-xs font-semibold text-slate-500">Drug safety and report intelligence</p>
+            <p className="text-xs font-semibold text-slate-500">Medicine guidance and report intelligence</p>
           </div>
         </button>
 

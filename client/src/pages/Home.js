@@ -1,20 +1,20 @@
-import { ArrowRight, BrainCircuit, ClipboardCheck, FileText, Pill, Sparkles } from "lucide-react"
+import { ArrowRight, BrainCircuit, FileText, Pill, SearchCheck, Sparkles } from "lucide-react"
 
 export default function Home({ onNavigate }) {
   const featureCards = [
-    ["Drug interaction engine", "CSV-first matching with OpenFDA enrichment for practical medication safety checks.", Pill],
+    ["Medicine information guide", "AI-assisted uses, side effects, safety notes, and Ayurvedic options in English or Hindi.", Pill],
+    ["Doctor department guidance", "Describe symptoms and get a suggested department, doctor type, urgency, and tests to discuss.", SearchCheck],
     ["Blood report assistant", "Turns pasted or uploaded values into readable risk summaries and next-step guidance.", FileText],
-    ["Care dashboard", "Keeps recent checks easy to review from the same running backend.", ClipboardCheck],
   ]
 
   const steps = [
-    ["01", "Enter medicines", "Add drugs, conditions, age, and renal flags for context-aware screening."],
-    ["02", "Run clinical logic", "The API normalizes names, checks stored interactions, and enriches signals."],
-    ["03", "Review clear guidance", "See severity, patient wording, recommendations, and report summaries."],
+    ["01", "Enter medicine or symptoms", "Add a drug name, patient problem, or report values depending on the workflow."],
+    ["02", "Generate bilingual guidance", "The API uses OpenAI when configured, with careful local fallbacks."],
+    ["03", "Review next steps", "See medicine safety, doctor department guidance, report summaries, and tests to discuss."],
   ]
 
   const liveSignals = [
-    ["Medication safety check", "Interactions matched against curated and OpenFDA signals", "Safety Check", "bg-rose-100 text-rose-700"],
+    ["Medicine guide", "Uses, side effects, warnings, and remedy context", "Guide", "bg-rose-100 text-rose-700"],
     ["Blood report review", "CBC and vitamin values translated into plain-language findings", "Report Review", "bg-amber-100 text-amber-700"],
     ["Personalized care guidance", "Next steps prepared for patient-friendly follow-up", "Care Note", "bg-teal-100 text-teal-700"],
   ]
@@ -25,17 +25,17 @@ export default function Home({ onNavigate }) {
         <div className="animated-card relative z-10 max-w-3xl">
           <p className="eyebrow mb-4">Clinical safety platform</p>
           <h1 className="text-4xl font-black leading-[1.04] tracking-tight text-slate-950 sm:text-5xl lg:text-6xl xl:text-7xl">
-            Predict safer medication decisions.
+            Understand medicines before you take the next step.
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
-            Check medication combinations from a local DrugBank-style CSV and OpenFDA signals, then turn uploaded blood reports into plain-language risk guidance.
+            Look up medicine uses, possible side effects, important cautions, and Ayurvedic remedies with similar intended effects, then turn uploaded blood reports into plain-language risk guidance.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <button
               onClick={() => onNavigate("interactions")}
               className="primary-button"
             >
-              Check interactions <ArrowRight size={18} />
+              Open medicine guide <ArrowRight size={18} />
             </button>
             <button
               onClick={() => onNavigate("blood")}
@@ -43,9 +43,15 @@ export default function Home({ onNavigate }) {
             >
               Analyze report <FileText size={18} />
             </button>
+            <button
+              onClick={() => onNavigate("symptoms")}
+              className="secondary-button"
+            >
+              Find doctor <SearchCheck size={18} />
+            </button>
           </div>
           <div className="mt-8 grid max-w-xl grid-cols-1 gap-3 text-center min-[420px]:grid-cols-3">
-            {["CSV dataset", "OpenFDA", "Mobile ready"].map((item) => (
+            {["OpenAI ready", "OpenFDA fallback", "Hindi toggle"].map((item) => (
               <div key={item} className="rounded-lg border border-slate-200 bg-white/70 px-3 py-3 text-xs font-black uppercase tracking-wide text-slate-600 shadow-sm">
                 {item}
               </div>
@@ -58,7 +64,7 @@ export default function Home({ onNavigate }) {
             <div className="mb-5 flex items-center justify-between gap-4">
               <div>
                 <p className="eyebrow">Live care preview</p>
-                <h2 className="mt-2 text-2xl font-black tracking-tight text-slate-950">Safety Intelligence</h2>
+                <h2 className="mt-2 text-2xl font-black tracking-tight text-slate-950">Medicine Intelligence</h2>
               </div>
               <div className="grid h-12 w-12 place-items-center rounded-lg bg-cyan-600 text-white shadow-lg shadow-cyan-700/20">
                 <BrainCircuit />

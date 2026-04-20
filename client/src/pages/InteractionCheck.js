@@ -1,9 +1,61 @@
 import { useState } from "react"
 import AlertCard from "../components/AlertCard"
-import DrugResultCard from "../components/DrugResultCard"
 import Loader from "../components/Loader"
 import { checkDrugInteractions } from "../services/drugService"
-import { Activity, Languages, ShieldCheck, Sparkles } from "lucide-react"
+import { Activity, Languages, Leaf, Pill, ShieldCheck, Sparkles } from "lucide-react"
+
+const labels = {
+  en: {
+    eyebrow: "Medicine Guide",
+    title: "Medicine Uses & Side Effects",
+    description: "Enter a drug or medicine name to see its common uses, possible side effects, important warnings, and Ayurvedic remedies with similar intended effects.",
+    medicine: "Drug or medicine name",
+    medicinePlaceholder: "Example: Ibuprofen, Paracetamol, Cetirizine",
+    conditions: "Patient context (optional)",
+    conditionsPlaceholder: "Example: diabetes, kidney disease, pregnancy",
+    age: "Age (optional)",
+    button: "Find medicine info",
+    readyTitle: "Ready to explain",
+    readyText: "Search for one medicine. Results will show patient-friendly uses, side effects, warnings, safe-use notes, and Ayurvedic options.",
+    resultEyebrow: "Medicine result",
+    uses: "Uses",
+    sideEffects: "Side effects",
+    seriousWarnings: "Important warnings",
+    safeUse: "Safe use guidance",
+    ayurvedicTitle: "Ayurvedic remedies with similar effect",
+    similarEffect: "Similar intended effect",
+    caution: "Caution",
+    evidenceNote: "Evidence note",
+    noItems: "No clear information available.",
+    disclaimer: "Note",
+    sourceLabel: "Source",
+  },
+  hi: {
+    eyebrow: "दवा गाइड",
+    title: "दवा के उपयोग और दुष्प्रभाव",
+    description: "किसी दवा या मेडिसिन का नाम डालें। आपको उसके सामान्य उपयोग, संभावित दुष्प्रभाव, जरूरी सावधानियां और मिलते-जुलते प्रभाव वाले आयुर्वेदिक विकल्प मिलेंगे।",
+    medicine: "दवा या मेडिसिन का नाम",
+    medicinePlaceholder: "उदाहरण: Ibuprofen, Paracetamol, Cetirizine",
+    conditions: "रोगी की जानकारी (वैकल्पिक)",
+    conditionsPlaceholder: "उदाहरण: diabetes, kidney disease, pregnancy",
+    age: "उम्र (वैकल्पिक)",
+    button: "दवा की जानकारी देखें",
+    readyTitle: "जानकारी के लिए तैयार",
+    readyText: "एक दवा खोजें। परिणाम में उपयोग, दुष्प्रभाव, सावधानियां, सुरक्षित उपयोग और आयुर्वेदिक विकल्प दिखेंगे।",
+    resultEyebrow: "दवा परिणाम",
+    uses: "उपयोग",
+    sideEffects: "दुष्प्रभाव",
+    seriousWarnings: "जरूरी सावधानियां",
+    safeUse: "सुरक्षित उपयोग",
+    ayurvedicTitle: "मिलते-जुलते प्रभाव वाले आयुर्वेदिक उपाय",
+    similarEffect: "मिलता-जुलता प्रभाव",
+    caution: "सावधानी",
+    evidenceNote: "प्रमाण संबंधी टिप्पणी",
+    noItems: "स्पष्ट जानकारी उपलब्ध नहीं है।",
+    disclaimer: "नोट",
+    sourceLabel: "स्रोत",
+  },
+}
 
 function splitValues(value) {
   return value
@@ -12,87 +64,94 @@ function splitValues(value) {
     .filter(Boolean)
 }
 
-const labels = {
-  en: {
-    eyebrow: "Analysis Tool",
-    title: "Drug Interaction Checker",
-    description: "Enter one medicine for uses and side effects, or two or more medicines to check interaction risks. The backend checks the CSV dataset and OpenFDA signals when available.",
-    medicines: "Medicines",
-    conditions: "Patient conditions",
-    age: "Age",
-    renal: "Renal impairment",
-    button: "Run safety check",
-    readyTitle: "Ready to scan",
-    readyText: "Results will appear here with medicine information, source coverage, severity, and practical guidance.",
-    resultEyebrow: "Results",
-    interactionTitle: "Interaction Summary",
-    singleTitle: "Medicine Information",
-    riskSignals: "risk signal(s) found",
-    noMajorTitle: "No major interactions found",
-    noMajorMessage: "No matching risk signal was found in the configured CSV/OpenFDA workflow. This is not a complete clinical clearance.",
-    uses: "Uses",
-    sideEffects: "Side effects",
-    seriousWarnings: "Important warnings",
-    safeUse: "Safe use guidance",
-    disclaimer: "Note",
-  },
-  hi: {
-    eyebrow: "Analysis Tool",
-    title: "Drug Interaction Checker",
-    description: "एक medicine डालें तो uses और side effects दिखेंगे। दो या ज्यादा medicines डालें तो interaction risk check होगा।",
-    medicines: "Medicines",
-    conditions: "Patient conditions",
-    age: "Age",
-    renal: "Kidney problem",
-    button: "Safety check चलाएं",
-    readyTitle: "Scan के लिए तैयार",
-    readyText: "Result में medicine information, source coverage, severity और practical guidance दिखेगी।",
-    resultEyebrow: "Results",
-    interactionTitle: "Interaction Summary",
-    singleTitle: "Medicine Information",
-    riskSignals: "risk signal मिले",
-    noMajorTitle: "कोई major interaction नहीं मिला",
-    noMajorMessage: "Configured CSV/OpenFDA workflow में matching risk signal नहीं मिला। यह complete clinical clearance नहीं है।",
-    uses: "उपयोग",
-    sideEffects: "Side effects",
-    seriousWarnings: "Important warnings",
-    safeUse: "Safe use guidance",
-    disclaimer: "Note",
-  },
+function TextSection({ title, items, emptyText }) {
+  return (
+    <section className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+      <h4 className="mb-3 font-black text-cyan-700">{title}</h4>
+      <ul className="grid gap-2 text-sm leading-6 text-slate-600">
+        {(items?.length ? items : [emptyText]).map((item) => (
+          <li key={item} className="pl-3 before:mr-2 before:text-cyan-600 before:content-['•']">
+            {item}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
 }
 
-function SingleDrugInfoCard({ info, labels }) {
-  if (!info) return null
-
-  const sections = [
-    ["uses", info.uses],
-    ["sideEffects", info.sideEffects],
-    ["seriousWarnings", info.seriousWarnings],
-    ["safeUse", info.safeUse],
-  ]
-
+function RemedyCard({ remedy, labels }) {
   return (
-    <article className="animated-card rounded-lg border border-cyan-200 bg-cyan-50/60 p-5 shadow-sm">
-      <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+    <article className="rounded-lg border border-emerald-200 bg-emerald-50/70 p-4 shadow-sm">
+      <div className="mb-3 flex items-start gap-3">
+        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-emerald-600 text-white">
+          <Leaf className="h-4 w-4" />
+        </span>
         <div>
-          <h3 className="text-xl font-black tracking-tight text-slate-950">{info.medicine}</h3>
-          <p className="mt-1 text-sm font-bold text-cyan-800">{info.source}</p>
+          <h4 className="font-black text-slate-950">{remedy.name}</h4>
+          <p className="mt-1 text-sm leading-6 text-emerald-900">
+            <span className="font-bold">{labels.similarEffect}: </span>
+            {remedy.similarEffect}
+          </p>
         </div>
       </div>
-      <div className="grid gap-4 md:grid-cols-2">
-        {sections.map(([key, items]) => (
-          <section key={key} className="rounded-lg bg-white p-4 shadow-sm">
-            <h4 className="mb-2 font-black text-cyan-700">{labels[key]}</h4>
-            <ul className="grid gap-2 text-sm leading-6 text-slate-600">
-              {(items || []).map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </section>
-        ))}
+      {remedy.evidenceNote && (
+        <p className="rounded-lg bg-white/70 p-3 text-sm leading-6 text-slate-700">
+          <span className="font-bold">{labels.evidenceNote}: </span>
+          {remedy.evidenceNote}
+        </p>
+      )}
+      {remedy.caution && (
+        <p className="mt-3 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm font-semibold leading-6 text-amber-900">
+          {labels.caution}: {remedy.caution}
+        </p>
+      )}
+    </article>
+  )
+}
+
+function MedicineInfoCard({ info, labels }) {
+  if (!info) return null
+
+  return (
+    <article className="grid gap-5">
+      <div className="rounded-lg border border-cyan-200 bg-cyan-50/70 p-5 shadow-sm">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <h3 className="text-2xl font-black tracking-tight text-slate-950">{info.medicine}</h3>
+            <p className="mt-1 text-sm font-bold text-cyan-800">
+              {labels.sourceLabel}: {info.source}
+            </p>
+          </div>
+          <span className="inline-flex w-fit items-center gap-2 rounded-lg bg-white px-3 py-2 text-sm font-black text-cyan-800 shadow-sm">
+            <Pill className="h-4 w-4" />
+            {info.category || "Medicine"}
+          </span>
+        </div>
       </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <TextSection title={labels.uses} items={info.uses} emptyText={labels.noItems} />
+        <TextSection title={labels.sideEffects} items={info.sideEffects} emptyText={labels.noItems} />
+        <TextSection title={labels.seriousWarnings} items={info.seriousWarnings} emptyText={labels.noItems} />
+        <TextSection title={labels.safeUse} items={info.safeUse} emptyText={labels.noItems} />
+      </div>
+
+      <section className="grid gap-3">
+        <div className="flex items-center gap-3">
+          <span className="grid h-10 w-10 place-items-center rounded-lg bg-emerald-600 text-white">
+            <Leaf className="h-5 w-5" />
+          </span>
+          <h3 className="text-xl font-black tracking-tight text-slate-950">{labels.ayurvedicTitle}</h3>
+        </div>
+        <div className="grid gap-3 lg:grid-cols-2">
+          {(info.ayurvedicRemedies?.length ? info.ayurvedicRemedies : []).map((remedy) => (
+            <RemedyCard key={`${remedy.name}-${remedy.similarEffect}`} remedy={remedy} labels={labels} />
+          ))}
+        </div>
+      </section>
+
       {info.disclaimer && (
-        <p className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm font-semibold leading-6 text-amber-900">
+        <p className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm font-semibold leading-6 text-amber-900">
           {labels.disclaimer}: {info.disclaimer}
         </p>
       )}
@@ -102,25 +161,31 @@ function SingleDrugInfoCard({ info, labels }) {
 
 export default function InteractionCheck() {
   const [language, setLanguage] = useState("en")
-  const [drugs, setDrugs] = useState("Warfarin\nIbuprofen")
+  const [medicine, setMedicine] = useState("Ibuprofen")
   const [conditions, setConditions] = useState("")
   const [age, setAge] = useState("")
-  const [renalImpairment, setRenalImpairment] = useState(false)
   const [result, setResult] = useState(null)
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
 
   async function runCheck(nextLanguage = language) {
+    const trimmedMedicine = medicine.trim()
+    if (!trimmedMedicine) {
+      setError(nextLanguage === "hi" ? "कृपया दवा का नाम डालें।" : "Please enter a medicine name.")
+      setResult(null)
+      return
+    }
+
     setError("")
     setResult(null)
     setLoading(true)
 
     try {
       const data = await checkDrugInteractions({
-        drugs: splitValues(drugs),
+        medicine: trimmedMedicine,
+        drugs: [trimmedMedicine],
         conditions: splitValues(conditions),
         age: age ? Number(age) : null,
-        renalImpairment,
         language: nextLanguage,
       })
       setResult(data)
@@ -173,20 +238,19 @@ export default function InteractionCheck() {
               onClick={() => handleLanguageChange("hi")}
               className={`rounded-md px-3 py-2 transition ${language === "hi" ? "bg-white text-cyan-700 shadow-sm" : "text-slate-500"}`}
             >
-              Hindi
+              हिंदी
             </button>
           </div>
         </div>
 
         <form onSubmit={handleSubmit} className="mt-6 grid gap-4">
           <label className="grid gap-2">
-            <span className="text-sm font-bold text-slate-700">{t.medicines}</span>
-            <textarea
-              value={drugs}
-              onChange={(event) => setDrugs(event.target.value)}
-              rows={6}
-              className="field resize-none"
-              placeholder="Warfarin, Ibuprofen"
+            <span className="text-sm font-bold text-slate-700">{t.medicine}</span>
+            <input
+              value={medicine}
+              onChange={(event) => setMedicine(event.target.value)}
+              className="field"
+              placeholder={t.medicinePlaceholder}
             />
           </label>
 
@@ -196,26 +260,20 @@ export default function InteractionCheck() {
               value={conditions}
               onChange={(event) => setConditions(event.target.value)}
               className="field"
-              placeholder="Kidney disease, diabetes"
+              placeholder={t.conditionsPlaceholder}
             />
           </label>
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            <label className="grid gap-2">
-              <span className="text-sm font-bold text-slate-700">{t.age}</span>
-              <input
-                type="number"
-                min="0"
-                value={age}
-                onChange={(event) => setAge(event.target.value)}
-                className="field"
-              />
-            </label>
-            <label className="flex min-h-[74px] items-center gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4">
-              <input className="h-5 w-5 accent-cyan-600" type="checkbox" checked={renalImpairment} onChange={(event) => setRenalImpairment(event.target.checked)} />
-              <span className="text-sm font-bold text-slate-700">{t.renal}</span>
-            </label>
-          </div>
+          <label className="grid gap-2">
+            <span className="text-sm font-bold text-slate-700">{t.age}</span>
+            <input
+              type="number"
+              min="0"
+              value={age}
+              onChange={(event) => setAge(event.target.value)}
+              className="field"
+            />
+          </label>
 
           <button className="primary-button">{t.button}</button>
         </form>
@@ -233,38 +291,22 @@ export default function InteractionCheck() {
             </div>
           </div>
         )}
-        {loading && <Loader label="Checking clinical signals..." />}
-        {error && <AlertCard title="Checker failed" message={error} type="error" />}
-        {result?.coverageNotice && <AlertCard title="Data Coverage Notice" message={result.coverageNotice} />}
+        {loading && <Loader label={language === "hi" ? "दवा की जानकारी तैयार हो रही है..." : "Preparing medicine information..."} />}
+        {error && <AlertCard title={language === "hi" ? "जानकारी नहीं मिल सकी" : "Lookup failed"} message={error} type="error" />}
+        {result?.coverageNotice && <AlertCard title={language === "hi" ? "सावधानी" : "Data Coverage Notice"} message={result.coverageNotice} />}
         {result && (
           <div className="surface-card animated-card p-5 sm:p-6">
-            <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <p className="eyebrow">{t.resultEyebrow}</p>
-                <h2 className="mt-2 text-2xl font-black tracking-tight text-slate-950">{result.singleDrugInfo ? t.singleTitle : t.interactionTitle}</h2>
-                {!result.singleDrugInfo && <p className="text-sm text-slate-500">{result.interactions.length} {t.riskSignals}</p>}
+                <h2 className="mt-2 text-2xl font-black tracking-tight text-slate-950">{result.medicineInfo?.medicine || medicine}</h2>
               </div>
               <p className="inline-flex items-center gap-2 rounded-lg bg-cyan-50 px-3 py-2 text-sm font-bold text-cyan-800">
                 <Sparkles className="h-4 w-4" />
                 {result.sourceSummary}
               </p>
             </div>
-            <div className="mb-5 flex flex-wrap gap-2">
-              {result.normalizedDrugs.map((drug) => (
-                <span key={drug} className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-bold text-slate-700">
-                  {drug}
-                </span>
-              ))}
-            </div>
-            <div className="grid gap-4">
-              {result.singleDrugInfo ? (
-                <SingleDrugInfoCard info={result.singleDrugInfo} labels={t} />
-              ) : result.interactions.length > 0 ? (
-                result.interactions.map((interaction) => <DrugResultCard key={interaction.id} result={interaction} />)
-              ) : (
-                <AlertCard title={t.noMajorTitle} message={t.noMajorMessage} type="success" />
-              )}
-            </div>
+            <MedicineInfoCard info={result.medicineInfo} labels={t} />
           </div>
         )}
       </section>

@@ -111,24 +111,41 @@ export async function analyzeBloodReportWithOpenAI({ reportText, findings, langu
   return { available: true, humanSummary: parsed }
 }
 
-function singleDrugPrompt({ drug, fdaInfo, language }) {
+function singleDrugPrompt({ drug, fdaInfo, language, patientContext }) {
   const outputLanguage = language === "hi" ? "Hindi" : "English"
 
   return `
 You are a careful medicine information summarizer for a patient-facing drug safety app.
 
 Medicine: ${drug}
+Patient context, if supplied:
+${JSON.stringify(patientContext || {}, null, 2)}
+
 Write in ${outputLanguage}. If ${outputLanguage} is Hindi, use natural Devanagari Hindi.
 
-Use the OpenFDA label text below when available. If it is missing, use general medicine knowledge but do not invent brand-specific claims. Do not prescribe a dose. Do not tell the user to start, stop, or change medicine without a clinician.
+Use the OpenFDA label text below when available. If it is missing, use general medicine knowledge but do not invent brand-specific claims.
+Include Ayurvedic remedies that may have a similar intended effect to the medicine's common use, but be conservative:
+- Do not claim they are equivalent replacements.
+- Include a caution for each remedy.
+- Mention limited evidence where relevant.
+- Do not prescribe dose, duration, or tell the user to start, stop, or change medicine without a clinician.
 
 Return valid JSON only in this exact shape:
 {
   "medicine": "",
+  "category": "",
   "uses": ["", "", ""],
   "sideEffects": ["", "", ""],
   "seriousWarnings": ["", ""],
   "safeUse": ["", ""],
+  "ayurvedicRemedies": [
+    {
+      "name": "",
+      "similarEffect": "",
+      "evidenceNote": "",
+      "caution": ""
+    }
+  ],
   "disclaimer": ""
 }
 
@@ -137,7 +154,7 @@ ${JSON.stringify(fdaInfo, null, 2).slice(0, 12000)}
 `.trim()
 }
 
-export async function summarizeSingleDrugWithOpenAI({ drug, fdaInfo, language }) {
+export async function summarizeSingleDrugWithOpenAI({ drug, fdaInfo, language, patientContext }) {
   if (!env.openAiApiKey) {
     return { available: false, message: "OPENAI_API_KEY is not configured." }
   }
@@ -150,7 +167,7 @@ export async function summarizeSingleDrugWithOpenAI({ drug, fdaInfo, language })
     },
     body: JSON.stringify({
       model: env.openAiModel,
-      input: singleDrugPrompt({ drug, fdaInfo, language }),
+      input: singleDrugPrompt({ drug, fdaInfo, language, patientContext }),
       temperature: 0.2,
     }),
     timeoutMs: 25000,
@@ -161,8 +178,84 @@ export async function summarizeSingleDrugWithOpenAI({ drug, fdaInfo, language })
   }
 
   const parsed = parseJson(outputText(response.data))
-  if (!parsed?.uses || !parsed?.sideEffects) {
+  if (!parsed?.uses || !parsed?.sideEffects || !parsed?.ayurvedicRemedies) {
     return { available: false, message: "OpenAI medicine summary could not be parsed." }
+  }
+
+  return { available: true, data: parsed }
+}
+
+function symptomGuidancePrompt({ problem, age, gender, duration, conditions, language }) {
+  const outputLanguage = language === "hi" ? "Hindi" : "English"
+
+  return `
+You are a careful patient navigation assistant for a health app.
+
+The user will describe symptoms or a medical problem. Your job is to suggest:
+1. the most suitable medical department/specialist to visit for evaluation and prescription,
+2. tests a doctor may commonly consider,
+3. urgency level and red flags.
+4. a patient-facing "What to ask your doctor" checklist.
+
+Do not diagnose. Do not prescribe medicines or doses. Do not claim tests are definitely required; phrase them as doctor-discussed or commonly considered tests. If symptoms sound urgent, clearly recommend emergency care.
+
+Write in ${outputLanguage}. If ${outputLanguage} is Hindi, use natural Devanagari Hindi.
+
+Return valid JSON only in this exact shape:
+{
+  "urgency": "routine | soon | urgent | emergency",
+  "summary": "",
+  "recommendedDepartments": [
+    {
+      "department": "",
+      "doctorType": "",
+      "reason": ""
+    }
+  ],
+  "suggestedTests": [
+    {
+      "test": "",
+      "reason": ""
+    }
+  ],
+  "redFlags": ["", "", ""],
+  "selfCareUntilVisit": ["", "", ""],
+  "askDoctorChecklist": ["", "", "", ""],
+  "questionsDoctorMayAsk": ["", "", ""],
+  "disclaimer": ""
+}
+
+Patient details:
+${JSON.stringify({ problem, age, gender, duration, conditions }, null, 2)}
+`.trim()
+}
+
+export async function analyzeSymptomsWithOpenAI({ problem, age, gender, duration, conditions, language }) {
+  if (!env.openAiApiKey) {
+    return { available: false, message: "OPENAI_API_KEY is not configured." }
+  }
+
+  const response = await safeJsonFetch("https://api.openai.com/v1/responses", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${env.openAiApiKey}`,
+    },
+    body: JSON.stringify({
+      model: env.openAiModel,
+      input: symptomGuidancePrompt({ problem, age, gender, duration, conditions, language }),
+      temperature: 0.2,
+    }),
+    timeoutMs: 25000,
+  })
+
+  if (!response.ok) {
+    return { available: false, message: "OpenAI symptom guidance was unavailable." }
+  }
+
+  const parsed = parseJson(outputText(response.data))
+  if (!parsed?.recommendedDepartments || !Array.isArray(parsed.recommendedDepartments) || !parsed?.suggestedTests) {
+    return { available: false, message: "OpenAI symptom guidance could not be parsed." }
   }
 
   return { available: true, data: parsed }

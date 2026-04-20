@@ -4,6 +4,7 @@ import { env } from "./config/env.js"
 import { errorHandler, notFound } from "./middleware/errorMiddleware.js"
 import bloodReportRoutes from "./routes/bloodReportRoutes.js"
 import drugApiRoutes from "./routes/drugApiRoutes.js"
+import symptomGuidanceRoutes from "./routes/symptomGuidanceRoutes.js"
 
 const app = express()
 const host = "0.0.0.0"
@@ -14,7 +15,6 @@ const configuredOrigins = [env.clientUrl, ...(env.corsOrigins || "").split(",")]
 
 const allowedOrigins = new Set([
   ...configuredOrigins,
-  "https://cure-care-client-production.up.railway.app",
   "https://cure-care-client.vercel.app",
   "http://localhost:5173",
   "http://localhost:4173",
@@ -48,6 +48,7 @@ app.get("/api/health", (req, res) => {
 
 app.use("/api/drugs", drugApiRoutes)
 app.use("/api/blood-reports", bloodReportRoutes)
+app.use("/api/symptoms", symptomGuidanceRoutes)
 
 app.use(notFound)
 app.use(errorHandler)
