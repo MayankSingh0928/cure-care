@@ -7,7 +7,7 @@ cure&care is a production-oriented starter for medicine information lookup and b
 - Medicine guide with uses, side effects, warnings, safe-use guidance, and similar-effect Ayurvedic remedies.
 - Blood report workflow with upload/text input and English/Hindi output.
 - Blood report extraction for pasted text, TXT, CSV, PDF text, and OCR-readable JPG/PNG images.
-- AI-style medicine and blood report responses when OpenAI is configured, with local fallbacks.
+- AI-style medicine and blood report responses when Gemini is configured, with local fallbacks.
 - Dashboard history for recent checks while the server process is running.
 - No login or authentication requirement; all tools are directly usable.
 - Clean API, service, route, controller, middleware, and data folders.
@@ -38,7 +38,7 @@ Very low-quality scans can still fail to extract values accurately, so users sho
 
 History is intentionally stored in memory only. Recent checks remain available while the server process is running and reset when the backend restarts.
 
-Optional OpenAI enrichment works only when an API key is configured.
+Optional Gemini enrichment works only when an API key is configured.
 
 ## Trust And Safety
 

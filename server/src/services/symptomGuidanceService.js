@@ -1,4 +1,4 @@
-import { analyzeSymptomsWithOpenAI } from "./openaiService.js"
+import { analyzeSymptomsWithGemini } from "./geminiService.js"
 
 function normalize(value = "") {
   return value.toLowerCase()
@@ -242,8 +242,8 @@ export async function getSymptomGuidance(payload = {}) {
     language,
   }
 
-  const aiResult = await analyzeSymptomsWithOpenAI(input)
-  const guidance = normalizeGuidance(aiResult.available ? { ...aiResult.data, source: "OpenAI symptom guidance" } : localGuidance(input), language)
+  const aiResult = await analyzeSymptomsWithGemini(input)
+  const guidance = normalizeGuidance(aiResult.available ? { ...aiResult.data, source: "Gemini symptom guidance" } : localGuidance(input), language)
 
   return {
     guidance,

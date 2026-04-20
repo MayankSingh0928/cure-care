@@ -9,7 +9,7 @@ export default function Home({ onNavigate }) {
 
   const steps = [
     ["01", "Enter medicine or symptoms", "Add a drug name, patient problem, or report values depending on the workflow."],
-    ["02", "Generate bilingual guidance", "The API uses OpenAI when configured, with careful local fallbacks."],
+    ["02", "Generate bilingual guidance", "The API uses Gemini when configured, with careful local fallbacks."],
     ["03", "Review next steps", "See medicine safety, doctor department guidance, report summaries, and tests to discuss."],
   ]
 

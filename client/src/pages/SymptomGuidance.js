@@ -94,7 +94,7 @@ function GuidanceResult({ result, labels }) {
     <article className="surface-card animated-card p-5 sm:p-6">
       <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <p className="eyebrow">{labels.source}: {guidance.source || (result.aiEnhanced ? "OpenAI" : "Local guidance")}</p>
+          <p className="eyebrow">{labels.source}: {guidance.source || (result.aiEnhanced ? "Gemini" : "Local guidance")}</p>
           <h2 className="mt-2 text-2xl font-black tracking-tight text-slate-950">{guidance.summary}</h2>
         </div>
         <span className={`inline-flex w-fit items-center gap-2 rounded-lg border px-4 py-3 text-sm font-black uppercase ${urgencyTone[guidance.urgency] || urgencyTone.routine}`}>

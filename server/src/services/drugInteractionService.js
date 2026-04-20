@@ -1,5 +1,5 @@
 import { safeJsonFetch } from "../utils/apiHelper.js"
-import { summarizeSingleDrugWithOpenAI } from "./openaiService.js"
+import { summarizeSingleDrugWithGemini } from "./geminiService.js"
 
 function normalize(value = "") {
   return value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim()
@@ -189,10 +189,7 @@ function commonFallback(drug, language) {
   return {
     medicine: normalizeDrugName(drug),
     source: "Curated medicine summary",
-    disclaimer:
-      language === "hi"
-        ? "यह जानकारी केवल शिक्षा के लिए है। दवा शुरू, बंद या बदलने से पहले doctor/pharmacist से सलाह लें। आयुर्वेदिक उपाय prescription medicine का direct replacement नहीं हैं।"
-        : "This information is educational. Ask a doctor or pharmacist before starting, stopping, or changing medicine. Ayurvedic remedies are not direct replacements for prescribed medicine.",
+    disclaimer: "",
     ...info,
   }
 }
@@ -236,9 +233,7 @@ function labelFallback(drug, fdaInfo, language) {
       },
     ],
     source: fdaInfo ? "OpenFDA drug label" : "General safety fallback",
-    disclaimer: isHindi
-      ? "यह जानकारी केवल शिक्षा के लिए है। दवा शुरू, बंद या बदलने से पहले doctor/pharmacist से सलाह लें।"
-      : "This information is educational. Ask a doctor or pharmacist before starting, stopping, or changing medicine.",
+    disclaimer: "",
   }
 }
 
@@ -255,7 +250,7 @@ function normalizeMedicineInfo(info, drug, fdaInfo, language) {
     seriousWarnings: Array.isArray(info?.seriousWarnings) && info.seriousWarnings.length ? info.seriousWarnings : fallback.seriousWarnings,
     safeUse: Array.isArray(info?.safeUse) && info.safeUse.length ? info.safeUse : fallback.safeUse,
     ayurvedicRemedies: Array.isArray(info?.ayurvedicRemedies) && info.ayurvedicRemedies.length ? info.ayurvedicRemedies : fallback.ayurvedicRemedies,
-    disclaimer: info?.disclaimer || fallback.disclaimer,
+    disclaimer: "",
   }
 }
 
@@ -270,7 +265,7 @@ export async function checkInteractions(payload = {}) {
   }
 
   const fdaInfo = await fetchOpenFdaLabel(medicine)
-  const aiSummary = await summarizeSingleDrugWithOpenAI({
+  const aiSummary = await summarizeSingleDrugWithGemini({
     drug: medicine,
     fdaInfo,
     language,
@@ -282,8 +277,8 @@ export async function checkInteractions(payload = {}) {
 
   const source = aiSummary.available
     ? fdaInfo
-      ? "OpenAI summary of OpenFDA label and Ayurvedic knowledge"
-      : "OpenAI medicine and Ayurvedic summary"
+      ? "Gemini summary of OpenFDA label and Ayurvedic knowledge"
+      : "Gemini medicine and Ayurvedic summary"
     : commonFallback(medicine, language)
       ? "Curated medicine summary"
       : fdaInfo
@@ -299,9 +294,5 @@ export async function checkInteractions(payload = {}) {
     singleDrugInfo: medicineInfo,
     interactions: [],
     sourceSummary: source,
-    coverageNotice:
-      language === "hi"
-        ? "यह educational information है। Side effects, contraindications, dose limits और patient-specific risks complete नहीं हो सकते। दवा या आयुर्वेदिक remedy शुरू/बंद/बदलने से पहले clinician/pharmacist से सलाह लें।"
-        : "This is educational information. Side effects, contraindications, dose limits, and patient-specific risks may be incomplete. Ask a clinician or pharmacist before starting, stopping, or changing a medicine or Ayurvedic remedy.",
   }
 }

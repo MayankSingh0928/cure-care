@@ -150,11 +150,6 @@ function MedicineInfoCard({ info, labels }) {
         </div>
       </section>
 
-      {info.disclaimer && (
-        <p className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm font-semibold leading-6 text-amber-900">
-          {labels.disclaimer}: {info.disclaimer}
-        </p>
-      )}
     </article>
   )
 }
@@ -293,7 +288,6 @@ export default function InteractionCheck() {
         )}
         {loading && <Loader label={language === "hi" ? "दवा की जानकारी तैयार हो रही है..." : "Preparing medicine information..."} />}
         {error && <AlertCard title={language === "hi" ? "जानकारी नहीं मिल सकी" : "Lookup failed"} message={error} type="error" />}
-        {result?.coverageNotice && <AlertCard title={language === "hi" ? "सावधानी" : "Data Coverage Notice"} message={result.coverageNotice} />}
         {result && (
           <div className="surface-card animated-card p-5 sm:p-6">
             <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">

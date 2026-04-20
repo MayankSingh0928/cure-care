@@ -8,10 +8,11 @@ export async function safeJsonFetch(url, options = {}) {
       ...options,
       signal: options.signal || controller.signal,
     })
+    const data = await response.json().catch(() => null)
     if (!response.ok) {
-      return { ok: false, status: response.status, data: null }
+      return { ok: false, status: response.status, data }
     }
-    return { ok: true, status: response.status, data: await response.json() }
+    return { ok: true, status: response.status, data }
   } catch (error) {
     return { ok: false, status: 0, data: null, error: error.message }
   } finally {

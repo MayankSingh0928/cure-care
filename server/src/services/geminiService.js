@@ -4,6 +4,15 @@ import { safeJsonFetch } from "../utils/apiHelper.js"
 function outputText(data) {
   if (typeof data?.output_text === "string") return data.output_text
 
+  const chatText = data?.choices?.[0]?.message?.content
+  if (typeof chatText === "string") return chatText
+
+  const geminiText = data?.candidates?.[0]?.content?.parts
+    ?.map((part) => part.text || "")
+    .filter(Boolean)
+    .join("\n")
+  if (typeof geminiText === "string") return geminiText
+
   return (data?.output || [])
     .flatMap((item) => item.content || [])
     .map((content) => content.text || content.output_text || "")
@@ -26,6 +35,85 @@ function parseJson(text) {
       return null
     }
   }
+}
+
+function activeGeminiConfig() {
+  const fallbackModels = ["gemini-2.0-flash", "gemini-2.0-flash-lite", "gemini-flash-lite-latest"].filter((model) => model !== env.geminiModel)
+
+  return {
+    provider: "Gemini",
+    apiKey: env.geminiApiKey,
+    model: env.geminiModel,
+    models: [env.geminiModel, ...fallbackModels],
+    urlFor(model) {
+      return `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`
+    },
+    bodyFor(prompt) {
+      return {
+        contents: [
+          {
+            role: "user",
+            parts: [{ text: prompt }],
+          },
+        ],
+        generationConfig: {
+          temperature: 0.2,
+          responseMimeType: "application/json",
+        },
+      }
+    },
+  }
+}
+
+async function requestGeminiJson(prompt, timeoutMs = 25000) {
+  const config = activeGeminiConfig()
+
+  if (!config.apiKey) {
+    return { available: false, message: `${config.provider} API key is not configured.` }
+  }
+
+  let response = null
+  let model = config.model
+
+  for (const candidateModel of config.models) {
+    model = candidateModel
+    response = await safeJsonFetch(config.urlFor(candidateModel), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-goog-api-key": config.apiKey,
+      },
+      body: JSON.stringify(config.bodyFor(prompt)),
+      timeoutMs,
+    })
+
+    const detail = response.data?.error?.message || response.error || ""
+    const shouldRetry =
+      !response.ok &&
+      (response.status === 429 ||
+        response.status === 503 ||
+        detail.toLowerCase().includes("high demand") ||
+        detail.toLowerCase().includes("overloaded"))
+
+    if (response.ok || !shouldRetry) break
+  }
+
+  if (!response.ok) {
+    const detail = response.data?.error?.message || response.error || `HTTP ${response.status}`
+    return {
+      available: false,
+      message: `${config.provider} request was unavailable: ${detail}`,
+      status: response.status,
+      error: response.error,
+    }
+  }
+
+  const text = outputText(response.data)
+  const parsed = parseJson(text)
+
+  return parsed
+    ? { available: true, data: parsed, provider: config.provider, model }
+    : { available: false, message: `${config.provider} response could not be parsed.` }
 }
 
 function bloodReportPrompt({ reportText, findings, language }) {
@@ -80,32 +168,15 @@ ${reportText.slice(0, 12000)}
 `.trim()
 }
 
-export async function analyzeBloodReportWithOpenAI({ reportText, findings, language }) {
-  if (!env.openAiApiKey) {
-    return { available: false, message: "OPENAI_API_KEY is not configured." }
+export async function analyzeBloodReportWithGemini({ reportText, findings, language }) {
+  const result = await requestGeminiJson(bloodReportPrompt({ reportText, findings, language }))
+  if (!result.available) {
+    return { available: false, message: `${result.message} Local medical rules were used.` }
   }
 
-  const response = await safeJsonFetch("https://api.openai.com/v1/responses", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${env.openAiApiKey}`,
-    },
-    body: JSON.stringify({
-      model: env.openAiModel,
-      input: bloodReportPrompt({ reportText, findings, language }),
-      temperature: 0.2,
-    }),
-    timeoutMs: 25000,
-  })
-
-  if (!response.ok) {
-    return { available: false, message: "OpenAI analysis was unavailable; local medical rules were used." }
-  }
-
-  const parsed = parseJson(outputText(response.data))
+  const parsed = result.data
   if (!parsed?.importantFindings || !Array.isArray(parsed.importantFindings)) {
-    return { available: false, message: "OpenAI response could not be parsed; local medical rules were used." }
+    return { available: false, message: `${result.provider} response could not be parsed; local medical rules were used.` }
   }
 
   return { available: true, humanSummary: parsed }
@@ -154,32 +225,15 @@ ${JSON.stringify(fdaInfo, null, 2).slice(0, 12000)}
 `.trim()
 }
 
-export async function summarizeSingleDrugWithOpenAI({ drug, fdaInfo, language, patientContext }) {
-  if (!env.openAiApiKey) {
-    return { available: false, message: "OPENAI_API_KEY is not configured." }
+export async function summarizeSingleDrugWithGemini({ drug, fdaInfo, language, patientContext }) {
+  const result = await requestGeminiJson(singleDrugPrompt({ drug, fdaInfo, language, patientContext }))
+  if (!result.available) {
+    return { available: false, message: result.message }
   }
 
-  const response = await safeJsonFetch("https://api.openai.com/v1/responses", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${env.openAiApiKey}`,
-    },
-    body: JSON.stringify({
-      model: env.openAiModel,
-      input: singleDrugPrompt({ drug, fdaInfo, language, patientContext }),
-      temperature: 0.2,
-    }),
-    timeoutMs: 25000,
-  })
-
-  if (!response.ok) {
-    return { available: false, message: "OpenAI medicine summary was unavailable." }
-  }
-
-  const parsed = parseJson(outputText(response.data))
+  const parsed = result.data
   if (!parsed?.uses || !parsed?.sideEffects || !parsed?.ayurvedicRemedies) {
-    return { available: false, message: "OpenAI medicine summary could not be parsed." }
+    return { available: false, message: `${result.provider} medicine summary could not be parsed.` }
   }
 
   return { available: true, data: parsed }
@@ -230,32 +284,15 @@ ${JSON.stringify({ problem, age, gender, duration, conditions }, null, 2)}
 `.trim()
 }
 
-export async function analyzeSymptomsWithOpenAI({ problem, age, gender, duration, conditions, language }) {
-  if (!env.openAiApiKey) {
-    return { available: false, message: "OPENAI_API_KEY is not configured." }
+export async function analyzeSymptomsWithGemini({ problem, age, gender, duration, conditions, language }) {
+  const result = await requestGeminiJson(symptomGuidancePrompt({ problem, age, gender, duration, conditions, language }))
+  if (!result.available) {
+    return { available: false, message: result.message }
   }
 
-  const response = await safeJsonFetch("https://api.openai.com/v1/responses", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${env.openAiApiKey}`,
-    },
-    body: JSON.stringify({
-      model: env.openAiModel,
-      input: symptomGuidancePrompt({ problem, age, gender, duration, conditions, language }),
-      temperature: 0.2,
-    }),
-    timeoutMs: 25000,
-  })
-
-  if (!response.ok) {
-    return { available: false, message: "OpenAI symptom guidance was unavailable." }
-  }
-
-  const parsed = parseJson(outputText(response.data))
+  const parsed = result.data
   if (!parsed?.recommendedDepartments || !Array.isArray(parsed.recommendedDepartments) || !parsed?.suggestedTests) {
-    return { available: false, message: "OpenAI symptom guidance could not be parsed." }
+    return { available: false, message: `${result.provider} symptom guidance could not be parsed.` }
   }
 
   return { available: true, data: parsed }

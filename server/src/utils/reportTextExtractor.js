@@ -21,15 +21,26 @@ async function recognizeImageBuffer(buffer) {
   tesseractModule ||= await import("tesseract.js")
   englishOcrData ||= require("@tesseract.js-data/eng")
 
-  const { createWorker } = tesseractModule
+  const { createWorker, PSM } = tesseractModule
   const worker = await createWorker(englishOcrData.code, undefined, {
     gzip: englishOcrData.gzip,
     langPath: englishOcrData.langPath,
   })
 
   try {
-    const result = await worker.recognize(buffer)
-    return result.data?.text || ""
+    const texts = []
+    const modes = [PSM.SINGLE_COLUMN, PSM.SINGLE_BLOCK]
+
+    for (const mode of modes) {
+      await worker.setParameters({
+        preserve_interword_spaces: "1",
+        tessedit_pageseg_mode: mode,
+      })
+      const result = await worker.recognize(buffer)
+      if (result.data?.text) texts.push(result.data.text)
+    }
+
+    return texts.join("\n")
   } finally {
     await worker.terminate()
   }

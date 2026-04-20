@@ -1,7 +1,7 @@
 import fs from "fs"
 import path from "path"
 import { fileURLToPath } from "url"
-import { analyzeBloodReportWithOpenAI } from "./openaiService.js"
+import { analyzeBloodReportWithGemini } from "./geminiService.js"
 import { normalizeTestName, statusForValue } from "../utils/normalizeBloodValues.js"
 import { extractReportText } from "../utils/reportTextExtractor.js"
 
@@ -15,10 +15,14 @@ const resultRowPatterns = {
   hematocrit: [/\b(?:HEMATOCRIT|HCT|PCV)(?:\s*\(PCV\))?\s+([<>]?\s*\d+(?:\.\d+)?)/i],
   mcv: [/\bMCV\s+([<>]?\s*\d+(?:\.\d+)?)/i],
   mch: [/\bMCH\s+([<>]?\s*\d+(?:\.\d+)?)/i],
-  mchc: [/\bMCHC\s+([<>]?\s*\d+(?:\.\d+)?)/i],
+  mchc: [/\bMCHC\s+([<>]?\s*\d+(?:\.\d+)?)/i, /Mean\s+Corpuscular\s+Hb\s+Concentration\s+([<>]?\s*\d+(?:\.\d+)?)/i],
   rdw: [/RDW-CV(?:\s+Calculated)?\s+([<>]?\s*\d+(?:\.\d+)?)/i],
   wbc: [/\bW\.?\s*B\.?\s*C\.?(?:\/TLC)?(?:\s+Count)?(?:\s+Electrical\s+Impedance)?\s+([<>]?\s*\d+(?:\.\d+)?)/i],
-  platelets: [/(?:Platelet|Platelate)\s+Count(?:\s+Electrical\s+Impedance)?\s+([<>]?\s*\d+(?:\.\d+)?)/i, /\bPLT\b\s+([<>]?\s*\d+(?:\.\d+)?)/i],
+  platelets: [
+    /(?:Platelet|Platelate)\s+Count(?:\s+Electrical\s+Impedance)?\s+([<>]?\s*\d[\d,]*(?:\.\d+)?)/i,
+    /\bPLT\b\s+([<>]?\s*\d[\d,]*(?:\.\d+)?)/i,
+    /([<>]?\s*\d[\d,]*(?:\.\d+)?)\s*[LH]?\s*\|?\s*150\s*000\s*[-–]?\s*4?10\s*000/i,
+  ],
   glucose: [/Glucose\s*-\s*Random\s+([<>]?\s*\d+(?:\.\d+)?)/i, /\bGlucose\b\s+([<>]?\s*\d+(?:\.\d+)?)/i],
   hba1c: [/\bHbA1c\b\s+([<>]?\s*\d+(?:\.\d+)?)/i],
   creatinine: [/Creatinine\s+([<>]?\s*\d+(?:\.\d+)?)/i],
@@ -91,7 +95,7 @@ function valueFromSpecificPattern(test, text) {
     if (/negative/i.test(match[1])) return 0
     if (/positive/i.test(match[1])) return Number.POSITIVE_INFINITY
 
-    const value = Number(match[1].replace(/[<>\s]/g, ""))
+    const value = Number(match[1].replace(/[<>,\s]/g, ""))
     if (!Number.isNaN(value)) return value
   }
 
@@ -102,8 +106,70 @@ function normalizeMeasuredValue(test, value) {
   if (test === "platelets" && value > 0 && value < 10) return value * 100000
   if (test === "platelets" && value > 10 && value < 1000) return value * 1000
   if (test === "wbc" && value > 1 && value < 100) return value * 1000
+  if (test === "mchc" && value > 1000) return value / 100
   if (test === "mchc" && value > 100) return value / 10
   return value
+}
+
+function normalizeRangeBound(test, value) {
+  if (["mchc", "mch"].includes(test) && value > 100) return value / 10
+  return value
+}
+
+function rangeFromLine(test, line) {
+  const compact = line.replace(/[\s,|]+/g, "")
+
+  if (test === "platelets") {
+    const plateletRange = compact.match(/(1[45]0{4,5})(?:-|to)?(4[15]0{3,4})/)
+    if (plateletRange) {
+      return { min: Number(plateletRange[1]), max: Number(plateletRange[2]) }
+    }
+  }
+
+  const rangeMatch = line.match(/(\d+(?:\.\d+)?)\s*[-–]\s*(\d+(?:\.\d+)?)/)
+  if (!rangeMatch) return null
+
+  const min = normalizeRangeBound(test, Number(rangeMatch[1]))
+  const max = normalizeRangeBound(test, Number(rangeMatch[2]))
+
+  if (Number.isNaN(min) || Number.isNaN(max) || min >= max) return null
+  return { min, max }
+}
+
+function rangeFromReportText(test, names, fallbackRange, lines) {
+  const normalizedNames = names.map((name) => normalizeTestName(name))
+  const candidateLines = lines.filter((line) => {
+    const normalizedLine = normalizeTestName(line)
+    if (test === "platelets" && /150\s*000/i.test(line)) return true
+    if (test === "hemoglobin") return /\bhemoglobin\b/i.test(line) && !/corpuscular/i.test(line)
+    if (test === "mchc") return /\bMCHC\b|Hb\s+Concentration/i.test(line)
+    return normalizedNames.some((name) => normalizedLine.includes(name))
+  })
+
+  for (const line of candidateLines) {
+    const parsedRange = rangeFromLine(test, line)
+    if (parsedRange) return { ...fallbackRange, ...parsedRange }
+  }
+
+  return fallbackRange
+}
+
+function flagStatusFromReportText(test, names, lines) {
+  const normalizedNames = names.map((name) => normalizeTestName(name))
+  const candidateLines = lines.filter((line) => {
+    const normalizedLine = normalizeTestName(line)
+    if (test === "hemoglobin") return /\bhemoglobin\b/i.test(line) && !/corpuscular/i.test(line)
+    if (test === "mchc") return /\bMCHC\b|Hb\s+Concentration/i.test(line)
+    if (test === "platelets" && /150\s*000/i.test(line)) return true
+    return normalizedNames.some((name) => normalizedLine.includes(name))
+  })
+
+  for (const line of candidateLines) {
+    if (/\d[\d,]*(?:\.\d+)?\s*H\b/i.test(line)) return "high"
+    if (/\d[\d,]*(?:\.\d+)?\s*L\b/i.test(line)) return "low"
+  }
+
+  return null
 }
 
 function findRangesInText(text) {
@@ -119,7 +185,9 @@ function findRangesInText(text) {
 
     if (specificValue !== null) {
       const value = normalizeMeasuredValue(test, specificValue)
-      findings.push({ test, value, unit: range.unit, status: statusForValue(value, range), min: range.min, max: range.max })
+      const reportRange = rangeFromReportText(test, names, range, lines)
+      const status = flagStatusFromReportText(test, names, lines) || statusForValue(value, reportRange)
+      findings.push({ test, value, unit: range.unit, status, min: reportRange.min, max: reportRange.max })
       return
     }
 
@@ -137,8 +205,10 @@ function findRangesInText(text) {
     const rawValue = match?.[1] || numberFromLine?.[1]
     if (!rawValue) return
 
-    const value = normalizeMeasuredValue(test, Number(rawValue.replace(/[<>\s]/g, "")))
-    findings.push({ test, value, unit: range.unit, status: statusForValue(value, range), min: range.min, max: range.max })
+    const value = normalizeMeasuredValue(test, Number(rawValue.replace(/[<>,\s]/g, "")))
+    const reportRange = rangeFromReportText(test, names, range, lines)
+    const status = flagStatusFromReportText(test, names, lines) || statusForValue(value, reportRange)
+    findings.push({ test, value, unit: range.unit, status, min: reportRange.min, max: reportRange.max })
   })
 
   return findings
@@ -713,7 +783,7 @@ export async function analyzeBloodReport({ text = "", file, language = "en" }) {
   const riskPercentage = calculateRiskPercentage(findings, abnormal)
   const copy = labelsBetter(language)
   const localHumanSummary = buildHumanSummaryBetter({ findings, abnormal, language })
-  const aiSummary = findings.length ? await analyzeBloodReportWithOpenAI({ reportText, findings, language }) : { available: false }
+  const aiSummary = findings.length ? await analyzeBloodReportWithGemini({ reportText, findings, language }) : { available: false }
   const humanSummary = aiSummary.available ? aiSummary.humanSummary : localHumanSummary
 
   return {
@@ -734,4 +804,3 @@ export async function analyzeBloodReport({ text = "", file, language = "en" }) {
     medicine: copy.medicine,
   }
 }
-
