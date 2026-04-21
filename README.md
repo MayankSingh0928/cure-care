@@ -38,8 +38,6 @@ Very low-quality scans can still fail to extract values accurately, so users sho
 
 History is intentionally stored in memory only. Recent checks remain available while the server process is running and reset when the backend restarts.
 
-Optional Gemini enrichment works only when an API key is configured.
-
 ## Trust And Safety
 
 This project should be presented as educational clinical decision support, not a diagnostic or prescribing authority. Medicine details, Ayurvedic remedies, and blood report summaries may be incomplete and must be verified by a doctor or pharmacist.
