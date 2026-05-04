@@ -11,6 +11,12 @@ This service is the medical assistant bridge:
 
 ## Setup
 
+Python is pinned for deployment in `.python-version`:
+
+```text
+3.13
+```
+
 ```bash
 cd ai_service
 python -m venv .venv

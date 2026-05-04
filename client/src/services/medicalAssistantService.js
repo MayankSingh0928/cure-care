@@ -9,7 +9,7 @@ async function requestFastApiAssistant(payload) {
       body: JSON.stringify(payload),
     })
   } catch {
-    throw new Error(`FastAPI AI service is not reachable at ${FASTAPI_BASE_URL}. Start it with npm run dev or npm run ai.`)
+    throw new Error(`FastAPI AI service is not reachable at ${FASTAPI_BASE_URL}. Check that the deployed AI service is running and that VITE_AI_API_URL points to the FastAPI service URL.`)
   }
 
   const data = await response.json().catch(() => ({}))
