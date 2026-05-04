@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react"
-import { Activity, FileText, LayoutDashboard } from "lucide-react"
+import { Activity, Bot, FileText, LayoutDashboard } from "lucide-react"
 import { getBloodHistory } from "../services/bloodReportService"
 import { getDrugHistory } from "../services/drugService"
+import { getMedicalAssistantHistory } from "../services/medicalAssistantService"
 import { formatDate } from "../utils/formatDate"
 
 export default function Dashboard() {
   const [drugHistory, setDrugHistory] = useState([])
   const [bloodHistory, setBloodHistory] = useState([])
+  const [assistantHistory, setAssistantHistory] = useState([])
 
   useEffect(() => {
     getDrugHistory().then((data) => setDrugHistory(data.logs || [])).catch(() => setDrugHistory([]))
     getBloodHistory().then((data) => setBloodHistory(data.logs || [])).catch(() => setBloodHistory([]))
+    getMedicalAssistantHistory().then((data) => setAssistantHistory(data.logs || [])).catch(() => setAssistantHistory([]))
   }, [])
 
   return (
@@ -28,7 +31,7 @@ export default function Dashboard() {
         </div>
       </section>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-6 xl:grid-cols-3">
         <section className="surface-card animated-card p-5 sm:p-6">
           <div className="flex items-center gap-3">
             <span className="grid h-10 w-10 place-items-center rounded-lg bg-cyan-50 text-cyan-700">
@@ -46,6 +49,29 @@ export default function Dashboard() {
               ))
             ) : (
               <p className="rounded-lg border border-dashed border-slate-200 bg-slate-50 p-4 text-sm text-slate-500">No checks yet.</p>
+            )}
+          </div>
+        </section>
+
+        <section className="surface-card animated-card p-5 sm:p-6" style={{ animationDelay: "120ms" }}>
+          <div className="flex items-center gap-3">
+            <span className="grid h-10 w-10 place-items-center rounded-lg bg-indigo-50 text-indigo-700">
+              <Bot className="h-5 w-5" />
+            </span>
+            <h2 className="text-xl font-black tracking-tight text-slate-950">AI assistant history</h2>
+          </div>
+          <div className="mt-4 grid gap-3">
+            {assistantHistory.length ? (
+              assistantHistory.map((log) => (
+                <div key={log.id} className="rounded-lg border border-slate-200 bg-slate-50 p-4 transition hover:-translate-y-0.5 hover:bg-white hover:shadow-sm">
+                  <p className="font-bold text-slate-950">{log.query || "Medical assistant query"}</p>
+                  <p className="text-sm text-slate-500">
+                    {log.riskBand} risk · {log.documentCount} snippets · {formatDate(log.createdAt)}
+                  </p>
+                </div>
+              ))
+            ) : (
+              <p className="rounded-lg border border-dashed border-slate-200 bg-slate-50 p-4 text-sm text-slate-500">No assistant checks yet.</p>
             )}
           </div>
         </section>

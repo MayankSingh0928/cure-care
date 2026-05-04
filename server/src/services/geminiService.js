@@ -297,3 +297,57 @@ export async function analyzeSymptomsWithGemini({ problem, age, gender, duration
 
   return { available: true, data: parsed }
 }
+
+function medicalAssistantPrompt({ userQuery, diagnosticData, retrievedDocuments }) {
+  return `
+You are the "Cure&Care 2.0" AI Medical Assistant, a careful clinical co-pilot for patient-facing decision support.
+
+Use ONLY the retrieved clinical documents for the "Evidence-Based Guidance" section. If the answer is not in the retrieved documents, write exactly:
+"I cannot find specific clinical data on this in my current research database."
+
+Do not hallucinate symptoms. Do not suggest specific medication dosages unless they are directly present in the retrieved documents. Always include the exact disclaimer below as the final line:
+*Note: This is an AI-assisted analysis based on clinical data. It is not a formal diagnosis. Please consult a healthcare professional.*
+
+Return valid JSON only in this exact shape:
+{
+  "responseMarkdown": "",
+  "statusOverview": "",
+  "evidenceBasedGuidance": [""],
+  "nextSteps": [""],
+  "safetyFlags": [""]
+}
+
+Response Markdown structure:
+**Status Overview**
+Plain-language interpretation of diagnostic data if present.
+
+**Evidence-Based Guidance**
+Answer the user's question using only retrieved documents.
+
+**Next Steps**
+Lifestyle adjustments or specialist types supported by retrieved documents.
+
+User Query:
+${userQuery}
+
+ML Analysis Result:
+${JSON.stringify(diagnosticData, null, 2)}
+
+Retrieved Clinical Context:
+${retrievedDocuments.map((doc, index) => `[${index + 1}] ${doc.title || doc.id || "Clinical document"}: ${doc.content}`).join("\n\n")}
+`.trim()
+}
+
+export async function generateMedicalAssistantWithGemini({ userQuery, diagnosticData, retrievedDocuments }) {
+  const result = await requestGeminiJson(medicalAssistantPrompt({ userQuery, diagnosticData, retrievedDocuments }))
+  if (!result.available) {
+    return { available: false, message: result.message }
+  }
+
+  const parsed = result.data
+  if (!parsed?.responseMarkdown || !parsed?.statusOverview || !parsed?.evidenceBasedGuidance || !parsed?.nextSteps) {
+    return { available: false, message: `${result.provider} medical assistant response could not be parsed.` }
+  }
+
+  return { available: true, data: parsed, provider: result.provider, model: result.model }
+}

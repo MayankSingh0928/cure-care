@@ -3,6 +3,9 @@
 # dependencies
 /node_modules
 **/node_modules
+**/.venv
+**/__pycache__
+*.pyc
 
 # production
 /build
@@ -17,6 +20,9 @@ yarn-error.log*
 
 # env files
 .env*
+
+# alternate trained model artifacts
+*.joblib
 
 # generated and deployment
 .vercel

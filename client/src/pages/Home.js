@@ -1,9 +1,10 @@
-import { ArrowRight, BrainCircuit, FileText, Pill, SearchCheck, Sparkles } from "lucide-react"
+import { ArrowRight, Bot, BrainCircuit, FileText, Pill, SearchCheck, Sparkles } from "lucide-react"
 
 export default function Home({ onNavigate }) {
   const featureCards = [
     ["Medicine information guide", "AI-assisted uses, side effects, safety notes, and Ayurvedic options in English or Hindi.", Pill],
     ["Doctor department guidance", "Describe symptoms and get a suggested department, doctor type, urgency, and tests to discuss.", SearchCheck],
+    ["ML + RAG assistant", "Combine structured vitals, retrieved clinical snippets, and a safety-constrained assistant response.", Bot],
     ["Blood report assistant", "Turns pasted or uploaded values into readable risk summaries and next-step guidance.", FileText],
   ]
 
@@ -30,7 +31,7 @@ export default function Home({ onNavigate }) {
           <p className="mt-5 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
             Look up medicine uses, possible side effects, important cautions, and Ayurvedic remedies with similar intended effects, then turn uploaded blood reports into plain-language risk guidance.
           </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <button
               onClick={() => onNavigate("interactions")}
               className="primary-button"
@@ -48,6 +49,12 @@ export default function Home({ onNavigate }) {
               className="secondary-button"
             >
               Find doctor <SearchCheck size={18} />
+            </button>
+            <button
+              onClick={() => onNavigate("assistant")}
+              className="secondary-button"
+            >
+              AI assistant <Bot size={18} />
             </button>
           </div>
         </div>
@@ -102,7 +109,7 @@ export default function Home({ onNavigate }) {
         </div>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-3">
+      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {featureCards.map(([title, copy, Icon], index) => (
           <article key={title} className="surface-card animated-card p-5" style={{ animationDelay: `${index * 90}ms` }}>
             <div className="mb-4 grid h-11 w-11 place-items-center rounded-lg bg-slate-950 text-cyan-300">

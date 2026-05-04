@@ -1,10 +1,11 @@
 # cure&care Medicine Guide
 
-cure&care is a production-oriented starter for medicine information lookup and blood report analysis. It is split into a React client and an Express API.
+cure&care is a production-oriented starter for medicine information lookup, blood report analysis, and ML + RAG medical assistant support. It is split into a React client, an Express API, and a FastAPI AI bridge.
 
 ## What Works
 
 - Medicine guide with uses, side effects, warnings, safe-use guidance, and similar-effect Ayurvedic remedies.
+- FastAPI disease prediction + RAG medical assistant that loads a real symptom-to-disease `.pkl` model, accepts ChromaDB/Pinecone snippets through `ragContext`, and returns a safety-constrained response.
 - Blood report workflow with upload/text input and English/Hindi output.
 - Blood report extraction for pasted text, TXT, CSV, PDF text, and OCR-readable JPG/PNG images.
 - AI-style medicine and blood report responses when Gemini is configured, with local fallbacks.
@@ -16,12 +17,47 @@ cure&care is a production-oriented starter for medicine information lookup and b
 
 ```bash
 npm install
+cd ai_service
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+cd ..
 npm run dev
 ```
 
 Client: `http://localhost:5173`
 
 Server: `http://localhost:5000/api/health`
+
+FastAPI AI service: `http://localhost:8000/health`
+
+## ML + RAG Medical Assistant
+
+Open `http://localhost:5173/medical-assistant` or use the FastAPI endpoint directly:
+
+```bash
+POST http://localhost:8000/analyze
+```
+
+Request body:
+
+```json
+{
+  "userQuery": "What disease might match these symptoms, and what should I do next?",
+  "symptoms": "fever, headache, nausea",
+  "ragContext": [
+    {
+      "title": "Migraine symptom profile",
+      "source": "ChromaDB or Pinecone",
+      "content": "Clinical snippet text..."
+    }
+  ]
+}
+```
+
+Put your trained disease model at `ai_service/model/disease_model.pkl`, or set `ML_MODEL_PATH` in `.env`. Train it from a disease/symptom `dataset.csv` with `ai_service/scripts/train_disease_model.py`.
+
+For production RAG, retrieve top snippets from ChromaDB or Pinecone and pass them through `ragContext`. Direct ChromaDB/Pinecone retrieval can also be configured in `ai_service/README.md`.
 
 ## Blood Report Upload Formats
 

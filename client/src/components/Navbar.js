@@ -1,10 +1,11 @@
 import { useState } from "react"
-import { Activity, FileText, Home, LayoutDashboard, Menu, SearchCheck, Shield, X } from "lucide-react"
+import { Activity, Bot, FileText, Home, LayoutDashboard, Menu, SearchCheck, Shield, X } from "lucide-react"
 
 const items = [
   { id: "home", label: "Home", icon: Home },
   { id: "interactions", label: "Medicine Guide", icon: Shield },
   { id: "symptoms", label: "Care Guidance", icon: SearchCheck },
+  { id: "assistant", label: "AI Assistant", icon: Bot },
   { id: "blood", label: "Blood Report", icon: FileText },
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
 ]

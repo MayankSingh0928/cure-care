@@ -1,0 +1,815 @@
+[
+  {
+    "id": "symptom-disease-1",
+    "title": "(vertigo) Paroymsal  Positional Vertigo symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: (vertigo) Paroymsal  Positional Vertigo. Associated symptoms in the dataset: headache, loss of balance, nausea, spinning movements, unsteadiness, vomiting. Description: Benign paroxysmal positional vertigo (BPPV) is one of the most common causes of vertigo \u2014 the sudden sensation that you're spinning or that the inside of your head is spinning. Benign paroxysmal positional vertigo causes brief episodes of mild to intense dizziness. Precautions listed in the dataset: lie down; avoid sudden change in body; avoid abrupt head movment; relax Symptom severity weights: headache: 3, loss of balance: 4, nausea: 5, spinning movements: 6, unsteadiness: 4, vomiting: 5",
+    "metadata": {
+      "disease": "(vertigo) Paroymsal  Positional Vertigo",
+      "symptoms": [
+        "headache",
+        "loss of balance",
+        "nausea",
+        "spinning movements",
+        "unsteadiness",
+        "vomiting"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-2",
+    "title": "AIDS symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: AIDS. Associated symptoms in the dataset: extra marital contacts, high fever, muscle wasting, patches in throat. Description: Acquired immunodeficiency syndrome (AIDS) is a chronic, potentially life-threatening condition caused by the human immunodeficiency virus (HIV). By damaging your immune system, HIV interferes with your body's ability to fight infection and disease. Precautions listed in the dataset: avoid open cuts; wear ppe if possible; consult doctor; follow up Symptom severity weights: extra marital contacts: 5, high fever: 7, muscle wasting: 3, patches in throat: 6",
+    "metadata": {
+      "disease": "AIDS",
+      "symptoms": [
+        "extra marital contacts",
+        "high fever",
+        "muscle wasting",
+        "patches in throat"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-3",
+    "title": "Acne symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Acne. Associated symptoms in the dataset: blackheads, pus filled pimples, scurring, skin rash. Description: Acne vulgaris is the formation of comedones, papules, pustules, nodules, and/or cysts as a result of obstruction and inflammation of pilosebaceous units (hair follicles and their accompanying sebaceous gland). Acne develops on the face and upper trunk. It most often affects adolescents. Precautions listed in the dataset: bath twice; avoid fatty spicy food; drink plenty of water; avoid too many products Symptom severity weights: blackheads: 2, pus filled pimples: 2, scurring: 2, skin rash: 3",
+    "metadata": {
+      "disease": "Acne",
+      "symptoms": [
+        "blackheads",
+        "pus filled pimples",
+        "scurring",
+        "skin rash"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-4",
+    "title": "Alcoholic hepatitis symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Alcoholic hepatitis. Associated symptoms in the dataset: abdominal pain, distention of abdomen, fluid overload, history of alcohol consumption, swelling of stomach, vomiting, yellowish skin. Description: Alcoholic hepatitis is a diseased, inflammatory condition of the liver caused by heavy alcohol consumption over an extended period of time. It's also aggravated by binge drinking and ongoing alcohol use. If you develop this condition, you must stop drinking alcohol Precautions listed in the dataset: stop alcohol consumption; consult doctor; medication; follow up Symptom severity weights: abdominal pain: 4, distention of abdomen: 4, fluid overload: 4, history of alcohol consumption: 5, swelling of stomach: 7, vomiting: 5, yellowish skin: 3",
+    "metadata": {
+      "disease": "Alcoholic hepatitis",
+      "symptoms": [
+        "abdominal pain",
+        "distention of abdomen",
+        "fluid overload",
+        "history of alcohol consumption",
+        "swelling of stomach",
+        "vomiting",
+        "yellowish skin"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-5",
+    "title": "Allergy symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Allergy. Associated symptoms in the dataset: chills, continuous sneezing, shivering, watering from eyes. Description: An allergy is an immune system response to a foreign substance that's not typically harmful to your body.They can include certain foods, pollen, or pet dander. Your immune system's job is to keep you healthy by fighting harmful pathogens. Precautions listed in the dataset: apply calamine; cover area with bandage; use ice to compress itching Symptom severity weights: chills: 3, continuous sneezing: 4, shivering: 5, watering from eyes: 4",
+    "metadata": {
+      "disease": "Allergy",
+      "symptoms": [
+        "chills",
+        "continuous sneezing",
+        "shivering",
+        "watering from eyes"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-6",
+    "title": "Arthritis symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Arthritis. Associated symptoms in the dataset: movement stiffness, muscle weakness, painful walking, stiff neck, swelling joints. Description: Arthritis is the swelling and tenderness of one or more of your joints. The main symptoms of arthritis are joint pain and stiffness, which typically worsen with age. The most common types of arthritis are osteoarthritis and rheumatoid arthritis. Precautions listed in the dataset: exercise; use hot and cold therapy; try acupuncture; massage Symptom severity weights: movement stiffness: 5, muscle weakness: 2, painful walking: 2, stiff neck: 4, swelling joints: 5",
+    "metadata": {
+      "disease": "Arthritis",
+      "symptoms": [
+        "movement stiffness",
+        "muscle weakness",
+        "painful walking",
+        "stiff neck",
+        "swelling joints"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-7",
+    "title": "Bronchial Asthma symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Bronchial Asthma. Associated symptoms in the dataset: breathlessness, cough, family history, fatigue, high fever, mucoid sputum. Description: Bronchial asthma is a medical condition which causes the airway path of the lungs to swell and narrow. Due to this swelling, the air path produces excess mucus making it hard to breathe, which results in coughing, short breath, and wheezing. The disease is chronic and interferes with daily working. Precautions listed in the dataset: switch to loose cloothing; take deep breaths; get away from trigger; seek help Symptom severity weights: breathlessness: 4, cough: 4, family history: 5, fatigue: 4, high fever: 7, mucoid sputum: 4",
+    "metadata": {
+      "disease": "Bronchial Asthma",
+      "symptoms": [
+        "breathlessness",
+        "cough",
+        "family history",
+        "fatigue",
+        "high fever",
+        "mucoid sputum"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-8",
+    "title": "Cervical spondylosis symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Cervical spondylosis. Associated symptoms in the dataset: back pain, dizziness, loss of balance, neck pain, weakness in limbs. Description: Cervical spondylosis is a general term for age-related wear and tear affecting the spinal disks in your neck. As the disks dehydrate and shrink, signs of osteoarthritis develop, including bony projections along the edges of bones (bone spurs). Precautions listed in the dataset: use heating pad or cold pack; exercise; take otc pain reliver; consult doctor Symptom severity weights: back pain: 3, dizziness: 4, loss of balance: 4, neck pain: 5, weakness in limbs: 7",
+    "metadata": {
+      "disease": "Cervical spondylosis",
+      "symptoms": [
+        "back pain",
+        "dizziness",
+        "loss of balance",
+        "neck pain",
+        "weakness in limbs"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-9",
+    "title": "Chicken pox symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Chicken pox. Associated symptoms in the dataset: fatigue, headache, high fever, itching, lethargy, loss of appetite, malaise, mild fever, red spots over body, skin rash, swelled lymph nodes. Description: Chickenpox is a highly contagious disease caused by the varicella-zoster virus (VZV). It can cause an itchy, blister-like rash. The rash first appears on the chest, back, and face, and then spreads over the entire body, causing between 250 and 500 itchy blisters. Precautions listed in the dataset: use neem in bathing; consume neem leaves; take vaccine; avoid public places Symptom severity weights: fatigue: 4, headache: 3, high fever: 7, itching: 1, lethargy: 2, loss of appetite: 4, malaise: 6, mild fever: 5, red spots over body: 3, skin rash: 3, swelled lymph nodes: 6",
+    "metadata": {
+      "disease": "Chicken pox",
+      "symptoms": [
+        "fatigue",
+        "headache",
+        "high fever",
+        "itching",
+        "lethargy",
+        "loss of appetite",
+        "malaise",
+        "mild fever",
+        "red spots over body",
+        "skin rash",
+        "swelled lymph nodes"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-10",
+    "title": "Chronic cholestasis symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Chronic cholestasis. Associated symptoms in the dataset: abdominal pain, itching, loss of appetite, nausea, vomiting, yellowing of eyes, yellowish skin. Description: Chronic cholestatic diseases, whether occurring in infancy, childhood or adulthood, are characterized by defective bile acid transport from the liver to the intestine, which is caused by primary damage to the biliary epithelium in most cases Precautions listed in the dataset: cold baths; anti itch medicine; consult doctor; eat healthy Symptom severity weights: abdominal pain: 4, itching: 1, loss of appetite: 4, nausea: 5, vomiting: 5, yellowing of eyes: 4, yellowish skin: 3",
+    "metadata": {
+      "disease": "Chronic cholestasis",
+      "symptoms": [
+        "abdominal pain",
+        "itching",
+        "loss of appetite",
+        "nausea",
+        "vomiting",
+        "yellowing of eyes",
+        "yellowish skin"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-11",
+    "title": "Common Cold symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Common Cold. Associated symptoms in the dataset: chest pain, chills, congestion, continuous sneezing, cough, fatigue, headache, high fever, loss of smell, malaise, muscle pain, phlegm, redness of eyes, runny nose, sinus pressure, swelled lymph nodes, throat irritation. Description: The common cold is a viral infection of your nose and throat (upper respiratory tract). It's usually harmless, although it might not feel that way. Many types of viruses can cause a common cold. Precautions listed in the dataset: drink vitamin c rich drinks; take vapour; avoid cold food; keep fever in check Symptom severity weights: chest pain: 7, chills: 3, congestion: 5, continuous sneezing: 4, cough: 4, fatigue: 4, headache: 3, high fever: 7, loss of smell: 3, malaise: 6, muscle pain: 2, phlegm: 5, redness of eyes: 5, runny nose: 5, sinus pressure: 4, swelled lymph nodes: 6, throat irritation: 4",
+    "metadata": {
+      "disease": "Common Cold",
+      "symptoms": [
+        "chest pain",
+        "chills",
+        "congestion",
+        "continuous sneezing",
+        "cough",
+        "fatigue",
+        "headache",
+        "high fever",
+        "loss of smell",
+        "malaise",
+        "muscle pain",
+        "phlegm",
+        "redness of eyes",
+        "runny nose",
+        "sinus pressure",
+        "swelled lymph nodes",
+        "throat irritation"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-12",
+    "title": "Dengue symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Dengue. Associated symptoms in the dataset: back pain, chills, fatigue, headache, high fever, joint pain, loss of appetite, malaise, muscle pain, nausea, pain behind the eyes, red spots over body, skin rash, vomiting. Description: an acute infectious disease caused by a flavivirus (species Dengue virus of the genus Flavivirus), transmitted by aedes mosquitoes, and characterized by headache, severe joint pain, and a rash. \u2014 called also breakbone fever, dengue fever. Precautions listed in the dataset: drink papaya leaf juice; avoid fatty spicy food; keep mosquitos away; keep hydrated Symptom severity weights: back pain: 3, chills: 3, fatigue: 4, headache: 3, high fever: 7, joint pain: 3, loss of appetite: 4, malaise: 6, muscle pain: 2, nausea: 5, pain behind the eyes: 4, red spots over body: 3, skin rash: 3, vomiting: 5",
+    "metadata": {
+      "disease": "Dengue",
+      "symptoms": [
+        "back pain",
+        "chills",
+        "fatigue",
+        "headache",
+        "high fever",
+        "joint pain",
+        "loss of appetite",
+        "malaise",
+        "muscle pain",
+        "nausea",
+        "pain behind the eyes",
+        "red spots over body",
+        "skin rash",
+        "vomiting"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-13",
+    "title": "Diabetes symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Diabetes. Associated symptoms in the dataset: blurred and distorted vision, excessive hunger, fatigue, increased appetite, irregular sugar level, lethargy, obesity, polyuria, restlessness, weight loss. Description: Diabetes is a disease that occurs when your blood glucose, also called blood sugar, is too high. Blood glucose is your main source of energy and comes from the food you eat. Insulin, a hormone made by the pancreas, helps glucose from food get into your cells to be used for energy. Precautions listed in the dataset: have balanced diet; exercise; consult doctor; follow up Symptom severity weights: blurred and distorted vision: 5, excessive hunger: 4, fatigue: 4, increased appetite: 5, irregular sugar level: 5, lethargy: 2, obesity: 4, polyuria: 4, restlessness: 5, weight loss: 3",
+    "metadata": {
+      "disease": "Diabetes",
+      "symptoms": [
+        "blurred and distorted vision",
+        "excessive hunger",
+        "fatigue",
+        "increased appetite",
+        "irregular sugar level",
+        "lethargy",
+        "obesity",
+        "polyuria",
+        "restlessness",
+        "weight loss"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-14",
+    "title": "Dimorphic hemmorhoids(piles) symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Dimorphic hemmorhoids(piles). Associated symptoms in the dataset: bloody stool, constipation, irritation in anus, pain during bowel movements, pain in anal region. Description: No description provided. Precautions listed in the dataset: avoid fatty spicy food; consume witch hazel; warm bath with epsom salt; consume alovera juice Symptom severity weights: bloody stool: 5, constipation: 4, irritation in anus: 6, pain during bowel movements: 5, pain in anal region: 6",
+    "metadata": {
+      "disease": "Dimorphic hemmorhoids(piles)",
+      "symptoms": [
+        "bloody stool",
+        "constipation",
+        "irritation in anus",
+        "pain during bowel movements",
+        "pain in anal region"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-15",
+    "title": "Drug Reaction symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Drug Reaction. Associated symptoms in the dataset: burning micturition, itching, skin rash, spotting  urination, stomach pain. Description: An adverse drug reaction (ADR) is an injury caused by taking medication. ADRs may occur following a single dose or prolonged administration of a drug or result from the combination of two or more drugs. Precautions listed in the dataset: stop irritation; consult nearest hospital; stop taking drug; follow up Symptom severity weights: burning micturition: 6, itching: 1, skin rash: 3, stomach pain: 5",
+    "metadata": {
+      "disease": "Drug Reaction",
+      "symptoms": [
+        "burning micturition",
+        "itching",
+        "skin rash",
+        "spotting  urination",
+        "stomach pain"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-16",
+    "title": "Fungal infection symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Fungal infection. Associated symptoms in the dataset: dischromic  patches, itching, nodal skin eruptions, skin rash. Description: In humans, fungal infections occur when an invading fungus takes over an area of the body and is too much for the immune system to handle. Fungi can live in the air, soil, water, and plants. There are also some fungi that live naturally in the human body. Like many microbes, there are helpful fungi and harmful fungi. Precautions listed in the dataset: bath twice; use detol or neem in bathing water; keep infected area dry; use clean cloths Symptom severity weights: itching: 1, nodal skin eruptions: 4, skin rash: 3",
+    "metadata": {
+      "disease": "Fungal infection",
+      "symptoms": [
+        "dischromic  patches",
+        "itching",
+        "nodal skin eruptions",
+        "skin rash"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-17",
+    "title": "GERD symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: GERD. Associated symptoms in the dataset: acidity, chest pain, cough, stomach pain, ulcers on tongue, vomiting. Description: Gastroesophageal reflux disease, or GERD, is a digestive disorder that affects the lower esophageal sphincter (LES), the ring of muscle between the esophagus and stomach. Many people, including pregnant women, suffer from heartburn or acid indigestion caused by GERD. Precautions listed in the dataset: avoid fatty spicy food; avoid lying down after eating; maintain healthy weight; exercise Symptom severity weights: acidity: 3, chest pain: 7, cough: 4, stomach pain: 5, ulcers on tongue: 4, vomiting: 5",
+    "metadata": {
+      "disease": "GERD",
+      "symptoms": [
+        "acidity",
+        "chest pain",
+        "cough",
+        "stomach pain",
+        "ulcers on tongue",
+        "vomiting"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-18",
+    "title": "Gastroenteritis symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Gastroenteritis. Associated symptoms in the dataset: dehydration, diarrhoea, sunken eyes, vomiting. Description: Gastroenteritis is an inflammation of the digestive tract, particularly the stomach, and large and small intestines. Viral and bacterial gastroenteritis are intestinal infections associated with symptoms of diarrhea , abdominal cramps, nausea , and vomiting . Precautions listed in the dataset: stop eating solid food for while; try taking small sips of water; rest; ease back into eating Symptom severity weights: dehydration: 4, diarrhoea: 6, sunken eyes: 3, vomiting: 5",
+    "metadata": {
+      "disease": "Gastroenteritis",
+      "symptoms": [
+        "dehydration",
+        "diarrhoea",
+        "sunken eyes",
+        "vomiting"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-19",
+    "title": "Heart attack symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Heart attack. Associated symptoms in the dataset: breathlessness, chest pain, sweating, vomiting. Description: The death of heart muscle due to the loss of blood supply. The loss of blood supply is usually caused by a complete blockage of a coronary artery, one of the arteries that supplies blood to the heart muscle. Precautions listed in the dataset: call ambulance; chew or swallow asprin; keep calm Symptom severity weights: breathlessness: 4, chest pain: 7, sweating: 3, vomiting: 5",
+    "metadata": {
+      "disease": "Heart attack",
+      "symptoms": [
+        "breathlessness",
+        "chest pain",
+        "sweating",
+        "vomiting"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-20",
+    "title": "Hepatitis B symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Hepatitis B. Associated symptoms in the dataset: abdominal pain, dark urine, fatigue, itching, lethargy, loss of appetite, malaise, receiving blood transfusion, receiving unsterile injections, yellow urine, yellowing of eyes, yellowish skin. Description: Hepatitis B is an infection of your liver. It can cause scarring of the organ, liver failure, and cancer. It can be fatal if it isn't treated. It's spread when people come in contact with the blood, open sores, or body fluids of someone who has the hepatitis B virus. Precautions listed in the dataset: consult nearest hospital; vaccination; eat healthy; medication Symptom severity weights: abdominal pain: 4, dark urine: 4, fatigue: 4, itching: 1, lethargy: 2, loss of appetite: 4, malaise: 6, receiving blood transfusion: 5, receiving unsterile injections: 2, yellow urine: 4, yellowing of eyes: 4, yellowish skin: 3",
+    "metadata": {
+      "disease": "Hepatitis B",
+      "symptoms": [
+        "abdominal pain",
+        "dark urine",
+        "fatigue",
+        "itching",
+        "lethargy",
+        "loss of appetite",
+        "malaise",
+        "receiving blood transfusion",
+        "receiving unsterile injections",
+        "yellow urine",
+        "yellowing of eyes",
+        "yellowish skin"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-21",
+    "title": "Hepatitis C symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Hepatitis C. Associated symptoms in the dataset: family history, fatigue, loss of appetite, nausea, yellowing of eyes, yellowish skin. Description: Inflammation of the liver due to the hepatitis C virus (HCV), which is usually spread via blood transfusion (rare), hemodialysis, and needle sticks. The damage hepatitis C does to the liver can lead to cirrhosis and its complications as well as cancer. Precautions listed in the dataset: Consult nearest hospital; vaccination; eat healthy; medication Symptom severity weights: family history: 5, fatigue: 4, loss of appetite: 4, nausea: 5, yellowing of eyes: 4, yellowish skin: 3",
+    "metadata": {
+      "disease": "Hepatitis C",
+      "symptoms": [
+        "family history",
+        "fatigue",
+        "loss of appetite",
+        "nausea",
+        "yellowing of eyes",
+        "yellowish skin"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-22",
+    "title": "Hepatitis D symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Hepatitis D. Associated symptoms in the dataset: abdominal pain, dark urine, fatigue, joint pain, loss of appetite, nausea, vomiting, yellowing of eyes, yellowish skin. Description: Hepatitis D, also known as the hepatitis delta virus, is an infection that causes the liver to become inflamed. This swelling can impair liver function and cause long-term liver problems, including liver scarring and cancer. The condition is caused by the hepatitis D virus (HDV). Precautions listed in the dataset: consult doctor; medication; eat healthy; follow up Symptom severity weights: abdominal pain: 4, dark urine: 4, fatigue: 4, joint pain: 3, loss of appetite: 4, nausea: 5, vomiting: 5, yellowing of eyes: 4, yellowish skin: 3",
+    "metadata": {
+      "disease": "Hepatitis D",
+      "symptoms": [
+        "abdominal pain",
+        "dark urine",
+        "fatigue",
+        "joint pain",
+        "loss of appetite",
+        "nausea",
+        "vomiting",
+        "yellowing of eyes",
+        "yellowish skin"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-23",
+    "title": "Hepatitis E symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Hepatitis E. Associated symptoms in the dataset: abdominal pain, acute liver failure, coma, dark urine, fatigue, high fever, joint pain, loss of appetite, nausea, stomach bleeding, vomiting, yellowing of eyes, yellowish skin. Description: A rare form of liver inflammation caused by infection with the hepatitis E virus (HEV). It is transmitted via food or drink handled by an infected person or through infected water supplies in areas where fecal matter may get into the water. Hepatitis E does not cause chronic liver disease. Precautions listed in the dataset: stop alcohol consumption; rest; consult doctor; medication Symptom severity weights: abdominal pain: 4, acute liver failure: 6, coma: 7, dark urine: 4, fatigue: 4, high fever: 7, joint pain: 3, loss of appetite: 4, nausea: 5, stomach bleeding: 6, vomiting: 5, yellowing of eyes: 4, yellowish skin: 3",
+    "metadata": {
+      "disease": "Hepatitis E",
+      "symptoms": [
+        "abdominal pain",
+        "acute liver failure",
+        "coma",
+        "dark urine",
+        "fatigue",
+        "high fever",
+        "joint pain",
+        "loss of appetite",
+        "nausea",
+        "stomach bleeding",
+        "vomiting",
+        "yellowing of eyes",
+        "yellowish skin"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-24",
+    "title": "Hypertension symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Hypertension. Associated symptoms in the dataset: chest pain, dizziness, headache, lack of concentration, loss of balance. Description: Hypertension (HTN or HT), also known as high blood pressure (HBP), is a long-term medical condition in which the blood pressure in the arteries is persistently elevated. High blood pressure typically does not cause symptoms. Precautions listed in the dataset: meditation; salt baths; reduce stress; get proper sleep Symptom severity weights: chest pain: 7, dizziness: 4, headache: 3, lack of concentration: 3, loss of balance: 4",
+    "metadata": {
+      "disease": "Hypertension",
+      "symptoms": [
+        "chest pain",
+        "dizziness",
+        "headache",
+        "lack of concentration",
+        "loss of balance"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-25",
+    "title": "Hyperthyroidism symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Hyperthyroidism. Associated symptoms in the dataset: abnormal menstruation, diarrhoea, excessive hunger, fast heart rate, fatigue, irritability, mood swings, muscle weakness, restlessness, sweating, weight loss. Description: Hyperthyroidism (overactive thyroid) occurs when your thyroid gland produces too much of the hormone thyroxine. Hyperthyroidism can accelerate your body's metabolism, causing unintentional weight loss and a rapid or irregular heartbeat. Precautions listed in the dataset: eat healthy; massage; use lemon balm; take radioactive iodine treatment Symptom severity weights: abnormal menstruation: 6, diarrhoea: 6, excessive hunger: 4, fast heart rate: 5, fatigue: 4, irritability: 2, mood swings: 3, muscle weakness: 2, restlessness: 5, sweating: 3, weight loss: 3",
+    "metadata": {
+      "disease": "Hyperthyroidism",
+      "symptoms": [
+        "abnormal menstruation",
+        "diarrhoea",
+        "excessive hunger",
+        "fast heart rate",
+        "fatigue",
+        "irritability",
+        "mood swings",
+        "muscle weakness",
+        "restlessness",
+        "sweating",
+        "weight loss"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-26",
+    "title": "Hypoglycemia symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Hypoglycemia. Associated symptoms in the dataset: anxiety, blurred and distorted vision, drying and tingling lips, excessive hunger, fatigue, headache, irritability, nausea, palpitations, slurred speech, sweating, vomiting. Description: Hypoglycemia is a condition in which your blood sugar (glucose) level is lower than normal. Glucose is your body's main energy source. Hypoglycemia is often related to diabetes treatment. But other drugs and a variety of conditions \u2014 many rare \u2014 can cause low blood sugar in people who don't have diabetes. Precautions listed in the dataset: lie down on side; check in pulse; drink sugary drinks; consult doctor Symptom severity weights: anxiety: 4, blurred and distorted vision: 5, drying and tingling lips: 4, excessive hunger: 4, fatigue: 4, headache: 3, irritability: 2, nausea: 5, palpitations: 4, slurred speech: 4, sweating: 3, vomiting: 5",
+    "metadata": {
+      "disease": "Hypoglycemia",
+      "symptoms": [
+        "anxiety",
+        "blurred and distorted vision",
+        "drying and tingling lips",
+        "excessive hunger",
+        "fatigue",
+        "headache",
+        "irritability",
+        "nausea",
+        "palpitations",
+        "slurred speech",
+        "sweating",
+        "vomiting"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-27",
+    "title": "Hypothyroidism symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Hypothyroidism. Associated symptoms in the dataset: abnormal menstruation, brittle nails, cold hands and feets, depression, dizziness, enlarged thyroid, fatigue, irritability, lethargy, mood swings, puffy face and eyes, swollen extremeties, weight gain. Description: Hypothyroidism, also called underactive thyroid or low thyroid, is a disorder of the endocrine system in which the thyroid gland does not produce enough thyroid hormone. Precautions listed in the dataset: reduce stress; exercise; eat healthy; get proper sleep Symptom severity weights: abnormal menstruation: 6, brittle nails: 5, cold hands and feets: 5, depression: 3, dizziness: 4, enlarged thyroid: 6, fatigue: 4, irritability: 2, lethargy: 2, mood swings: 3, puffy face and eyes: 5, swollen extremeties: 5, weight gain: 3",
+    "metadata": {
+      "disease": "Hypothyroidism",
+      "symptoms": [
+        "abnormal menstruation",
+        "brittle nails",
+        "cold hands and feets",
+        "depression",
+        "dizziness",
+        "enlarged thyroid",
+        "fatigue",
+        "irritability",
+        "lethargy",
+        "mood swings",
+        "puffy face and eyes",
+        "swollen extremeties",
+        "weight gain"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-28",
+    "title": "Impetigo symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Impetigo. Associated symptoms in the dataset: blister, high fever, red sore around nose, skin rash, yellow crust ooze. Description: Impetigo (im-puh-TIE-go) is a common and highly contagious skin infection that mainly affects infants and children. Impetigo usually appears as red sores on the face, especially around a child's nose and mouth, and on hands and feet. The sores burst and develop honey-colored crusts. Precautions listed in the dataset: soak affected area in warm water; use antibiotics; remove scabs with wet compressed cloth; consult doctor Symptom severity weights: blister: 4, high fever: 7, red sore around nose: 2, skin rash: 3, yellow crust ooze: 3",
+    "metadata": {
+      "disease": "Impetigo",
+      "symptoms": [
+        "blister",
+        "high fever",
+        "red sore around nose",
+        "skin rash",
+        "yellow crust ooze"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-29",
+    "title": "Jaundice symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Jaundice. Associated symptoms in the dataset: abdominal pain, dark urine, fatigue, high fever, itching, vomiting, weight loss, yellowish skin. Description: Yellow staining of the skin and sclerae (the whites of the eyes) by abnormally high blood levels of the bile pigment bilirubin. The yellowing extends to other tissues and body fluids. Jaundice was once called the \"morbus regius\" (the regal disease) in the belief that only the touch of a king could cure it Precautions listed in the dataset: drink plenty of water; consume milk thistle; eat fruits and high fiberous food; medication Symptom severity weights: abdominal pain: 4, dark urine: 4, fatigue: 4, high fever: 7, itching: 1, vomiting: 5, weight loss: 3, yellowish skin: 3",
+    "metadata": {
+      "disease": "Jaundice",
+      "symptoms": [
+        "abdominal pain",
+        "dark urine",
+        "fatigue",
+        "high fever",
+        "itching",
+        "vomiting",
+        "weight loss",
+        "yellowish skin"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-30",
+    "title": "Malaria symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Malaria. Associated symptoms in the dataset: chills, diarrhoea, headache, high fever, muscle pain, nausea, sweating, vomiting. Description: An infectious disease caused by protozoan parasites from the Plasmodium family that can be transmitted by the bite of the Anopheles mosquito or by a contaminated needle or transfusion. Falciparum malaria is the most deadly type. Precautions listed in the dataset: Consult nearest hospital; avoid oily food; avoid non veg food; keep mosquitos out Symptom severity weights: chills: 3, diarrhoea: 6, headache: 3, high fever: 7, muscle pain: 2, nausea: 5, sweating: 3, vomiting: 5",
+    "metadata": {
+      "disease": "Malaria",
+      "symptoms": [
+        "chills",
+        "diarrhoea",
+        "headache",
+        "high fever",
+        "muscle pain",
+        "nausea",
+        "sweating",
+        "vomiting"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-31",
+    "title": "Migraine symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Migraine. Associated symptoms in the dataset: acidity, blurred and distorted vision, depression, excessive hunger, headache, indigestion, irritability, stiff neck, visual disturbances. Description: A migraine can cause severe throbbing pain or a pulsing sensation, usually on one side of the head. It's often accompanied by nausea, vomiting, and extreme sensitivity to light and sound. Migraine attacks can last for hours to days, and the pain can be so severe that it interferes with your daily activities. Precautions listed in the dataset: meditation; reduce stress; use poloroid glasses in sun; consult doctor Symptom severity weights: acidity: 3, blurred and distorted vision: 5, depression: 3, excessive hunger: 4, headache: 3, indigestion: 5, irritability: 2, stiff neck: 4, visual disturbances: 3",
+    "metadata": {
+      "disease": "Migraine",
+      "symptoms": [
+        "acidity",
+        "blurred and distorted vision",
+        "depression",
+        "excessive hunger",
+        "headache",
+        "indigestion",
+        "irritability",
+        "stiff neck",
+        "visual disturbances"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-32",
+    "title": "Osteoarthristis symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Osteoarthristis. Associated symptoms in the dataset: hip joint pain, joint pain, knee pain, neck pain, painful walking, swelling joints. Description: Osteoarthritis is the most common form of arthritis, affecting millions of people worldwide. It occurs when the protective cartilage that cushions the ends of your bones wears down over time. Precautions listed in the dataset: acetaminophen; consult nearest hospital; follow up; salt baths Symptom severity weights: hip joint pain: 2, joint pain: 3, knee pain: 3, neck pain: 5, painful walking: 2, swelling joints: 5",
+    "metadata": {
+      "disease": "Osteoarthristis",
+      "symptoms": [
+        "hip joint pain",
+        "joint pain",
+        "knee pain",
+        "neck pain",
+        "painful walking",
+        "swelling joints"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-33",
+    "title": "Paralysis (brain hemorrhage) symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Paralysis (brain hemorrhage). Associated symptoms in the dataset: altered sensorium, headache, vomiting, weakness of one body side. Description: Intracerebral hemorrhage (ICH) is when blood suddenly bursts into brain tissue, causing damage to your brain. Symptoms usually appear suddenly during ICH. They include headache, weakness, confusion, and paralysis, particularly on one side of your body. Precautions listed in the dataset: massage; eat healthy; exercise; consult doctor Symptom severity weights: altered sensorium: 2, headache: 3, vomiting: 5, weakness of one body side: 4",
+    "metadata": {
+      "disease": "Paralysis (brain hemorrhage)",
+      "symptoms": [
+        "altered sensorium",
+        "headache",
+        "vomiting",
+        "weakness of one body side"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-34",
+    "title": "Peptic ulcer diseae symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Peptic ulcer diseae. Associated symptoms in the dataset: abdominal pain, indigestion, internal itching, loss of appetite, passage of gases, vomiting. Description: Peptic ulcer disease (PUD) is a break in the inner lining of the stomach, the first part of the small intestine, or sometimes the lower esophagus. An ulcer in the stomach is called a gastric ulcer, while one in the first part of the intestines is a duodenal ulcer. Precautions listed in the dataset: avoid fatty spicy food; consume probiotic food; eliminate milk; limit alcohol Symptom severity weights: abdominal pain: 4, indigestion: 5, internal itching: 4, loss of appetite: 4, passage of gases: 5, vomiting: 5",
+    "metadata": {
+      "disease": "Peptic ulcer diseae",
+      "symptoms": [
+        "abdominal pain",
+        "indigestion",
+        "internal itching",
+        "loss of appetite",
+        "passage of gases",
+        "vomiting"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-35",
+    "title": "Pneumonia symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Pneumonia. Associated symptoms in the dataset: breathlessness, chest pain, chills, cough, fast heart rate, fatigue, high fever, malaise, phlegm, rusty sputum, sweating. Description: Pneumonia is an infection in one or both lungs. Bacteria, viruses, and fungi cause it. The infection causes inflammation in the air sacs in your lungs, which are called alveoli. The alveoli fill with fluid or pus, making it difficult to breathe. Precautions listed in the dataset: consult doctor; medication; rest; follow up Symptom severity weights: breathlessness: 4, chest pain: 7, chills: 3, cough: 4, fast heart rate: 5, fatigue: 4, high fever: 7, malaise: 6, phlegm: 5, rusty sputum: 4, sweating: 3",
+    "metadata": {
+      "disease": "Pneumonia",
+      "symptoms": [
+        "breathlessness",
+        "chest pain",
+        "chills",
+        "cough",
+        "fast heart rate",
+        "fatigue",
+        "high fever",
+        "malaise",
+        "phlegm",
+        "rusty sputum",
+        "sweating"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-36",
+    "title": "Psoriasis symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Psoriasis. Associated symptoms in the dataset: inflammatory nails, joint pain, silver like dusting, skin peeling, skin rash, small dents in nails. Description: Psoriasis is a common skin disorder that forms thick, red, bumpy patches covered with silvery scales. They can pop up anywhere, but most appear on the scalp, elbows, knees, and lower back. Psoriasis can't be passed from person to person. It does sometimes happen in members of the same family. Precautions listed in the dataset: wash hands with warm soapy water; stop bleeding using pressure; consult doctor; salt baths Symptom severity weights: inflammatory nails: 2, joint pain: 3, silver like dusting: 2, skin peeling: 3, skin rash: 3, small dents in nails: 2",
+    "metadata": {
+      "disease": "Psoriasis",
+      "symptoms": [
+        "inflammatory nails",
+        "joint pain",
+        "silver like dusting",
+        "skin peeling",
+        "skin rash",
+        "small dents in nails"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-37",
+    "title": "Tuberculosis symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Tuberculosis. Associated symptoms in the dataset: blood in sputum, breathlessness, chest pain, chills, cough, fatigue, high fever, loss of appetite, malaise, mild fever, phlegm, sweating, swelled lymph nodes, vomiting, weight loss, yellowing of eyes. Description: Tuberculosis (TB) is an infectious disease usually caused by Mycobacterium tuberculosis (MTB) bacteria. Tuberculosis generally affects the lungs, but can also affect other parts of the body. Most infections show no symptoms, in which case it is known as latent tuberculosis. Precautions listed in the dataset: cover mouth; consult doctor; medication; rest Symptom severity weights: blood in sputum: 5, breathlessness: 4, chest pain: 7, chills: 3, cough: 4, fatigue: 4, high fever: 7, loss of appetite: 4, malaise: 6, mild fever: 5, phlegm: 5, sweating: 3, swelled lymph nodes: 6, vomiting: 5, weight loss: 3, yellowing of eyes: 4",
+    "metadata": {
+      "disease": "Tuberculosis",
+      "symptoms": [
+        "blood in sputum",
+        "breathlessness",
+        "chest pain",
+        "chills",
+        "cough",
+        "fatigue",
+        "high fever",
+        "loss of appetite",
+        "malaise",
+        "mild fever",
+        "phlegm",
+        "sweating",
+        "swelled lymph nodes",
+        "vomiting",
+        "weight loss",
+        "yellowing of eyes"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-38",
+    "title": "Typhoid symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Typhoid. Associated symptoms in the dataset: abdominal pain, belly pain, chills, constipation, diarrhoea, fatigue, headache, high fever, nausea, toxic look (typhos), vomiting. Description: An acute illness characterized by fever caused by infection with the bacterium Salmonella typhi. Typhoid fever has an insidious onset, with fever, headache, constipation, malaise, chills, and muscle pain. Diarrhea is uncommon, and vomiting is not usually severe. Precautions listed in the dataset: eat high calorie vegitables; antiboitic therapy; consult doctor; medication Symptom severity weights: abdominal pain: 4, belly pain: 4, chills: 3, constipation: 4, diarrhoea: 6, fatigue: 4, headache: 3, high fever: 7, nausea: 5, toxic look (typhos): 5, vomiting: 5",
+    "metadata": {
+      "disease": "Typhoid",
+      "symptoms": [
+        "abdominal pain",
+        "belly pain",
+        "chills",
+        "constipation",
+        "diarrhoea",
+        "fatigue",
+        "headache",
+        "high fever",
+        "nausea",
+        "toxic look (typhos)",
+        "vomiting"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-39",
+    "title": "Urinary tract infection symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Urinary tract infection. Associated symptoms in the dataset: bladder discomfort, burning micturition, continuous feel of urine, foul smell of urine. Description: Urinary tract infection: An infection of the kidney, ureter, bladder, or urethra. Abbreviated UTI. Not everyone with a UTI has symptoms, but common symptoms include a frequent urge to urinate and pain or burning when urinating. Precautions listed in the dataset: drink plenty of water; increase vitamin c intake; drink cranberry juice; take probiotics Symptom severity weights: bladder discomfort: 4, burning micturition: 6, continuous feel of urine: 6",
+    "metadata": {
+      "disease": "Urinary tract infection",
+      "symptoms": [
+        "bladder discomfort",
+        "burning micturition",
+        "continuous feel of urine",
+        "foul smell of urine"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-40",
+    "title": "Varicose veins symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: Varicose veins. Associated symptoms in the dataset: bruising, cramps, fatigue, obesity, prominent veins on calf, swollen blood vessels, swollen legs. Description: A vein that has enlarged and twisted, often appearing as a bulging, blue blood vessel that is clearly visible through the skin. Varicose veins are most common in older adults, particularly women, and occur especially on the legs. Precautions listed in the dataset: lie down flat and raise the leg high; use oinments; use vein compression; dont stand still for long Symptom severity weights: bruising: 4, cramps: 4, fatigue: 4, obesity: 4, prominent veins on calf: 6, swollen blood vessels: 5, swollen legs: 5",
+    "metadata": {
+      "disease": "Varicose veins",
+      "symptoms": [
+        "bruising",
+        "cramps",
+        "fatigue",
+        "obesity",
+        "prominent veins on calf",
+        "swollen blood vessels",
+        "swollen legs"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  },
+  {
+    "id": "symptom-disease-41",
+    "title": "hepatitis A symptom profile",
+    "source": "Local symptom CSV dataset",
+    "content": "Disease: hepatitis A. Associated symptoms in the dataset: abdominal pain, dark urine, diarrhoea, joint pain, loss of appetite, mild fever, muscle pain, nausea, vomiting, yellowing of eyes, yellowish skin. Description: Hepatitis A is a highly contagious liver infection caused by the hepatitis A virus. The virus is one of several types of hepatitis viruses that cause inflammation and affect your liver's ability to function. Precautions listed in the dataset: Consult nearest hospital; wash hands through; avoid fatty spicy food; medication Symptom severity weights: abdominal pain: 4, dark urine: 4, diarrhoea: 6, joint pain: 3, loss of appetite: 4, mild fever: 5, muscle pain: 2, nausea: 5, vomiting: 5, yellowing of eyes: 4, yellowish skin: 3",
+    "metadata": {
+      "disease": "hepatitis A",
+      "symptoms": [
+        "abdominal pain",
+        "dark urine",
+        "diarrhoea",
+        "joint pain",
+        "loss of appetite",
+        "mild fever",
+        "muscle pain",
+        "nausea",
+        "vomiting",
+        "yellowing of eyes",
+        "yellowish skin"
+      ],
+      "source_type": "symptom_dataset"
+    }
+  }
+]
