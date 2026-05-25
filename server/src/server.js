@@ -6,6 +6,7 @@ import { errorHandler, notFound } from "./middleware/errorMiddleware.js"
 import bloodReportRoutes from "./routes/bloodReportRoutes.js"
 import drugApiRoutes from "./routes/drugApiRoutes.js"
 import featureRoutes from "./routes/featureRoutes.js"
+import reportExtractRoutes from "./routes/reportExtractRoutes.js"
 import symptomGuidanceRoutes from "./routes/symptomGuidanceRoutes.js"
 
 const app = express()
@@ -67,6 +68,7 @@ app.get("/api", (req, res) => {
       medicineHistory: "GET /api/features/medicine/history",
       bloodReportAnalyze: "POST /api/features/blood-report/analyze",
       bloodReportHistory: "GET /api/features/blood-report/history",
+      reportExtract: "POST /api/report/extract",
       careGuidance: "POST /api/features/care-guidance/analyze",
       careGuidanceHistory: "GET /api/features/care-guidance/history",
     },
@@ -96,6 +98,7 @@ app.get("/api/health", (req, res) => {
 app.use("/api/features", featureRoutes)
 app.use("/api/drugs", drugApiRoutes)
 app.use("/api/blood-reports", bloodReportRoutes)
+app.use("/api/report", reportExtractRoutes)
 app.use("/api/symptoms", symptomGuidanceRoutes)
 
 app.use(notFound)
@@ -105,8 +108,18 @@ process.on("unhandledRejection", (error) => {
   console.error("Unhandled promise rejection:", error)
 })
 
+function isTesseractWorkerFailure(error) {
+  const text = String(error?.stack || error?.message || error || "")
+  return /tesseract|createWorker|worker/i.test(text) || /^10\d{5,}$/.test(text)
+}
+
 process.on("uncaughtException", (error) => {
   console.error("Uncaught exception:", error)
+  if (isTesseractWorkerFailure(error)) {
+    console.error("Tesseract worker failed; keeping API process alive so the route can return JSON.")
+    return
+  }
+
   process.exit(1)
 })
 

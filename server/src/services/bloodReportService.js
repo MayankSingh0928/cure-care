@@ -763,6 +763,18 @@ function buildHumanSummaryBetter({ findings, abnormal, language }) {
 }
 
 export async function analyzeBloodReport({ text = "", file, language = "en" }) {
+  const startedAt = Date.now()
+  const isImageUpload = file?.mimetype?.startsWith("image/")
+  if (isImageUpload) {
+    console.log("[blood-report] image_analysis_start", {
+      timestamp: new Date().toISOString(),
+      mimetype: file.mimetype,
+      size: file.size,
+      originalName: file.originalname,
+      language,
+    })
+  }
+
   const extracted = await extractReportText(file)
   const reportText = `${text}\n${extracted.text}`.trim()
 
@@ -783,8 +795,21 @@ export async function analyzeBloodReport({ text = "", file, language = "en" }) {
   const riskPercentage = calculateRiskPercentage(findings, abnormal)
   const copy = labelsBetter(language)
   const localHumanSummary = buildHumanSummaryBetter({ findings, abnormal, language })
-  const aiSummary = findings.length ? await analyzeBloodReportWithGemini({ reportText, findings, language }) : { available: false }
+  const shouldUseGeminiSummary = findings.length > 0 && extracted.source !== "ocr"
+  const aiSummary = shouldUseGeminiSummary ? await analyzeBloodReportWithGemini({ reportText, findings, language }) : { available: false }
   const humanSummary = aiSummary.available ? aiSummary.humanSummary : localHumanSummary
+
+  if (isImageUpload) {
+    console.log("[blood-report] image_analysis_complete", {
+      timestamp: new Date().toISOString(),
+      durationMs: Date.now() - startedAt,
+      extractedCharacters: reportText.length,
+      findings: findings.length,
+      abnormalFindings: abnormal.length,
+      riskPercentage,
+      aiEnhanced: aiSummary.available,
+    })
+  }
 
   return {
     summary: buildSummary({ findings, abnormal, copy }),

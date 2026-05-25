@@ -70,6 +70,20 @@ The blood report screen accepts:
 - scanned `.pdf` through OCR fallback on rendered pages
 - `.jpg`, `.jpeg`, `.png` through OCR
 
+Raw text extraction is also available at:
+
+```bash
+POST /api/report/extract
+```
+
+Use multipart form-data with upload field:
+
+```text
+file
+```
+
+PDF extraction uses `pdf-parse` for selectable/digital PDF text. Tesseract OCR is used only for image uploads.
+
 Very low-quality scans can still fail to extract values accurately, so users should review the detected findings before trusting the summary.
 
 History is intentionally stored in memory only. Recent checks remain available while the server process is running and reset when the backend restarts.
